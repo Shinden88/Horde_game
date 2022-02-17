@@ -13,8 +13,18 @@ class Preload extends Phaser.Scene {
   }
 
   create() {
+
+    
     this.scene.start('PlayScene');
   }
+
+
+  
   
 }
+
+
+
+
+
 export default Preload;

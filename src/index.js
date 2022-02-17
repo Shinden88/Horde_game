@@ -20,6 +20,12 @@ const initScenes = () => Scenes.map(createScene)
 
 const config = {
   type: Phaser.AUTO,
+  scale: {
+    parent: 'yourgamediv',
+    mode: Phaser.Scale.RESIZE,
+    width: 600,
+    height: 800
+},
  ...SHARED_CONFIG,
  pixelArt: true,
   physics: {

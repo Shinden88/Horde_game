@@ -12,6 +12,8 @@ class Play extends Phaser.Scene {
     const tileset2 = map.addTilesetImage('objectsspritesheet', 'tiles-2');
     map.createStaticLayer('enviroment', tileset2);
     map.createStaticLayer('platform', [tileset1, tileset2]);
+
+    
     
   }
   
