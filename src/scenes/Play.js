@@ -6,12 +6,13 @@ class Play extends Phaser.Scene {
     super('PlayScene');
   }
 
-  preload() {
-    this.load.image("sky", "assets/sky.png");
-  }
-
   create() {
-    this.add.image(0,0, 'sky').setOrigin(0)
+    const map = this.make.tilemap({key: 'map'});
+    const tileset1 = map.addTilesetImage('tilesspritesheet', 'tiles-1');
+    const tileset2 = map.addTilesetImage('objectsspritesheet', 'tiles-2');
+    map.createStaticLayer('enviroment', tileset2);
+    map.createStaticLayer('platform', [tileset1, tileset2]);
+    
   }
   
 }
