@@ -13,7 +13,9 @@ class Preload extends Phaser.Scene {
     // this.load.image('player', 'assets/player/movements/idle100.png');
     this.load.spritesheet('player', 'assets/player/moves_1.png', {frameWidth: 60, frameHeight: 37
     })
-    
+    //fix this find out actual dimensions/spacing
+    this.load.spritesheet('wizard', 'assets/enemy/Idle.png', {frameWidth: 250, frameHeight: 250
+    })
     
   }
   create() {
