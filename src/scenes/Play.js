@@ -12,10 +12,10 @@ class Play extends Phaser.Scene {
 
      const setLayer =  this.createLayers(map);
 
-     this.player = this.createPlayer();
-      this.playerSpeed = 200;
-     this.physics.add.collider(this.player,setLayer.platformsColliders);
-     this.cursors = this.input.keyboard.createCursorKeys();
+     const player = this.createPlayer();
+      // this.playerSpeed = 200;
+     this.physics.add.collider(player, setLayer.platformsColliders);
+    //  this.cursors = this.input.keyboard.createCursorKeys();
 
 
     
@@ -24,14 +24,9 @@ class Play extends Phaser.Scene {
   createMap() {
     const map = this.make.tilemap({key: 'map'});
 
-     
-
     map.addTilesetImage('main_lev_build_1', 'tilesOne')
     return map;
   }
-
-
-  
 
 
 
@@ -57,22 +52,10 @@ class Play extends Phaser.Scene {
   createPlayer() {
     // const player = this.physics.add.sprite(100, 250, 'player');
     
-    const player = new Player(this, 100, 250);
-    
-    return player;
+    return new Player(this, 100, 250);
   }
 
-    update() {
-      const { left, right } = this.cursors;
 
-
-      if (left.isDown) {
-        this.player.setVelocityX(-this.playerSpeed);
-      } else if (right.isDown) {
-        this.player.setVelocityX(this.playerSpeed);
-      } else {
-        this.player.setVelocityX(0);
-      }
-    }
+      
 }
 export default Play;
