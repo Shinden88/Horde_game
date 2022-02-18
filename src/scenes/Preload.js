@@ -7,14 +7,26 @@ class Preload extends Phaser.Scene {
   }
 
   preload() {
-    this.load.tilemapTiledJSON('map', 'assets/level_example.json');
-    this.load.image('tiles-1', 'assets/Tile_Set/tilesspritesheet.png');
-    this.load.image('tiles-2', 'assets/Objects/objectsspritesheet.png');
+    this.load.tilemapTiledJSON('map', 'assets/cyrstal_world_map.tmj')
+    this.load.image('tilesOne', 'assets/main_lev_build_1.png')
+    this.load.image('tilesTwo', 'assets/main_lev_build_2.png')
+    this.load.image('player', 'assets/player/movements/idle100.png')
+    
+    
   }
-
   create() {
+
+    
     this.scene.start('PlayScene');
   }
+
+
+  
   
 }
+
+
+
+
+
 export default Preload;
