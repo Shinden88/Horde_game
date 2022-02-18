@@ -7,15 +7,25 @@ class Play extends Phaser.Scene {
   }
 
   create() {
-    const map = this.make.tilemap({key: 'map'});
-    const tileset1 = map.addTilesetImage('tilesspritesheet', 'tiles-1');
-    const tileset2 = map.addTilesetImage('objectsspritesheet', 'tiles-2');
-    map.createStaticLayer('enviroment', tileset2);
-    map.createStaticLayer('platform', [tileset1, tileset2]);
+   const map = this.createMap();
 
-    
+      this.createLayers(map);
+
+   
     
   }
-  
+  //renders the map of the level
+  createMap() {
+    const map = this.make.tilemap({key: 'map'});
+    map.addTilesetImage('main_lev_build_1', 'tilesOne')
+    return map;
+  }
+  //renders the map layers
+  createLayers(map) {
+    const setTiles = map.getTileset('main_lev_build_1');
+    map.createLayer('environment', setTiles)
+    map.createLayer('platforms', setTiles)
+
+  }
 }
 export default Play;
