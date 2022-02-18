@@ -11,14 +11,12 @@ class Play extends Phaser.Scene {
 
      const setLayer =  this.createLayers(map);
 
-     this.player = this.createPlayer();
+     const player = this.createPlayer();
 
-     this.physics.add.collider(this.player, setLayer.stage )
+     this.physics.add.collider(player,setLayer.platformsColliders )
 
 
-    //
-    this.playerSpeed = 200;
-    this.cursors = this.input.keyboard.createCursorKeys();
+    
   }
   //renders the map of the level
   createMap() {
@@ -40,12 +38,14 @@ class Play extends Phaser.Scene {
   createLayers(map) {
     const setTiles = map.getTileset('main_lev_build_1');
     const location = map.createLayer('environment', setTiles)
-    const stage = map.createLayer('platforms', setTiles)
+    const platforms = map.createLayer('platforms', setTiles)
+
+    const platformsColliders = map.createLayer('platform_collider', setTiles)
 
     //Phaser executes that any tiles larger than 0 will collide
-    stage.setCollisionByExclusion(-1, true)
+    platformsColliders.setCollisionByExclusion(-1, true)
 
-    return { location, stage }
+    return { location, platforms, platformsColliders }
 
   }
 
@@ -54,23 +54,6 @@ class Play extends Phaser.Scene {
     player.body.setGravityY(500);
     player.setCollideWorldBounds(true);
     return player;
-  }
-  update() {
-    const { left, right } = this.cursors;
-
-    if (left.isDown) {
-      // negative is moving left
-      this.player.setVelocity(-this.playerSpeed);
-
-    } else if (right.isDown) {
-      //positive is moving right
-      this.player.setVelocity(this.playerSpeed);
-
-    } else {
-      //0 is not moving
-      this.player.setVelocity(0);
-
-    }
   }
 }
 export default Play;
