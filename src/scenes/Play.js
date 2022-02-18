@@ -16,7 +16,6 @@ class Play extends Phaser.Scene {
      this.physics.add.collider(player,setLayer.stage )
 
 
-   
     
   }
   //renders the map of the level
@@ -48,10 +47,10 @@ class Play extends Phaser.Scene {
 
   }
 
-  createPlayers() {
-    const player = this.physics.add.sprites(100,250, 'player')
+  createPlayer() {
+    const player = this.physics.add.sprite(100, 250, 'player');
     player.body.setGravityY(500);
-    player.setCollideWorldBounds(true)
+    player.setCollideWorldBounds(true);
     return player;
   }
 }
