@@ -9,7 +9,12 @@ class Play extends Phaser.Scene {
   create() {
    const map = this.createMap();
 
-      this.createLayers(map);
+     const setLayer =  this.createLayers(map);
+
+     const player = this.createPlayer();
+
+     this.physics.add.collider(player,setLayer.stage )
+
 
    
     
@@ -17,15 +22,37 @@ class Play extends Phaser.Scene {
   //renders the map of the level
   createMap() {
     const map = this.make.tilemap({key: 'map'});
+
+     
+
     map.addTilesetImage('main_lev_build_1', 'tilesOne')
     return map;
   }
+
+
+  
+
+
+
+
   //renders the map layers
   createLayers(map) {
     const setTiles = map.getTileset('main_lev_build_1');
-    map.createLayer('environment', setTiles)
-    map.createLayer('platforms', setTiles)
+    const location = map.createLayer('environment', setTiles)
+    const stage = map.createLayer('platforms', setTiles)
 
+    //Phaser executes that any tiles larger than 0 will collide
+    stage.setCollisionByExclusion(-1, true)
+
+    return { location, stage }
+
+  }
+
+  createPlayers() {
+    const player = this.physics.add.sprites(100,250, 'player')
+    player.body.setGravityY(500);
+    player.setCollideWorldBounds(true)
+    return player;
   }
 }
 export default Play;
