@@ -13,7 +13,7 @@ class Play extends Phaser.Scene {
 
      const player = this.createPlayer();
 
-     this.physics.add.collider(player,setLayer.platformsColliders );
+     this.physics.add.collider(player,setLayer.platformsColliders);
 
 
     
@@ -37,13 +37,16 @@ class Play extends Phaser.Scene {
   //renders the map layers
   createLayers(map) {
     const setTiles = map.getTileset('main_lev_build_1');
+    
+  
+    const platformsColliders = map.createLayer('platform_collider', setTiles)
     const location = map.createLayer('environment', setTiles)
     const platforms = map.createLayer('platforms', setTiles)
 
-    const platformsColliders = map.createLayer('platform_collider', setTiles)
+    
 
     //Phaser executes that any tiles larger than 0 will collide
-    platformsColliders.setCollisionByExclusion(-1, true);
+    platformsColliders.setCollisionByProperty({collides: true})
 
     return { location, platforms, platformsColliders }
 

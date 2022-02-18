@@ -12,6 +12,7 @@ class Preload extends Phaser.Scene {
     this.load.image('tilesTwo', 'assets/main_lev_build_2.png')
     this.load.image('player', 'assets/player/movements/idle100.png')
     
+    
   }
   create() {
 
