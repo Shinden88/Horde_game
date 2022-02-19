@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
 
      const player = this.createPlayer();
       // this.playerSpeed = 200;
-     this.physics.add.collider(player, setLayer.platformsColliders);
+     player.addCollider(setLayer.platformsColliders);
     //  this.cursors = this.input.keyboard.createCursorKeys();
 
 
