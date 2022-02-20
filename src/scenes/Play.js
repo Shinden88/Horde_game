@@ -53,8 +53,12 @@ class Play extends Phaser.Scene {
     return enemies;
   }
 
+  createPlayerColliders(player, { colliders }) {
+    player
+    .addCollider(colliders.platformsColliders);
+  }
+
    createEnemyColliders(enemies, { colliders }) {
-   
       enemies
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.player);
@@ -92,9 +96,7 @@ class Play extends Phaser.Scene {
 
   
 
-  createPlayerColliders(player, { colliders }) {
-    player.addCollider(colliders.platformsColliders);
-  }
+
 
   setupFollowupCameraOn(player) {
     const { height, width, mapOffset, zoomFactor } = this.config;
