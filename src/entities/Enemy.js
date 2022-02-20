@@ -23,9 +23,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.body.setGravityY(this.gravity);
 
     //adjust later once map done
-    this.setSize(150, 150);
-    this.setDisplaySize(200, 200);
-    this.setOffset(2, 1);
+    this.setSize(60, 110);
+    this.setDisplaySize(150, 150);
+    this.setOffset(100, 55);
 
 
     this.setCollideWorldBounds(true);

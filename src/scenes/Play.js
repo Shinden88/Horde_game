@@ -53,13 +53,31 @@ class Play extends Phaser.Scene {
     return enemies;
   }
 
+  createPlayerColliders(player, { colliders }) {
+    player
+    .addCollider(colliders.platformsColliders);
+  }
+
    createEnemyColliders(enemies, { colliders }) {
-    
       enemies
       .addCollider(colliders.platformsColliders)
       
       .addCollider(colliders.player);
   
+  }
+
+  startDrawing(pointer) {
+    this.linex2 = pointer.worldX;
+    this.line.y2 = pointer.worldY;
+
+    this.graphics.strokeLineShape(this.line);
+  }
+
+  finishDrawing(pointer) {
+    this.line.x2 = pointer.worldX;
+    this.line.y2 =pointer.worldY;
+
+    this.graphics.strokeLineShape(this.line);
   }
 
 
@@ -93,9 +111,7 @@ class Play extends Phaser.Scene {
 
   
 
-  createPlayerColliders(player, { colliders }) {
-    player.addCollider(colliders.platformsColliders);
-  }
+
 
   setupFollowupCameraOn(player) {
     const { height, width, mapOffset, zoomFactor } = this.config;
@@ -125,5 +141,13 @@ class Play extends Phaser.Scene {
       console.log("You win!");
     });
   }
+   update() {
+     const pointer = this.input.activePointer;
+
+     this.line.x2 = pointer.worldX;
+     this.line.x2 = pointer.worldY;
+
+     this.graphics.strokeLineShape(this.line);
+   }
 }
 export default Play;
