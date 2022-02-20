@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Player from "../entities/Player";
-import Wizard from "../entities/Wizard";
+import Enemies from "../groups/Enemies";
 
 class Play extends Phaser.Scene {
   constructor(config) {
@@ -22,34 +22,45 @@ class Play extends Phaser.Scene {
       colliders: {
       platformsColliders: setLayer.platformsColliders, player
       }
-    })
+    });
 
     this.createPlayerColliders(player, {
       colliders: {
         platformsColliders: setLayer.platformsColliders,
-      },
+      }
     });
+
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
   }
 
+  createPlayer(start) {
+    // const player = this.physics.add.sprite(100, 250, 'player');
 
-  createEnemies(spawnLayer) {
 
-   return spawnLayer.objects.map(spawnPoint => {
-    return new Wizard(this, spawnPoint.x, spawnPoint.y);
+    return new Player(this, start.x, start.y);
+  }
+
+  createEnemies(creationLayer) {
+    const enemies = new Enemies(this);
+    const enemyTypes = enemies.getTypes();
+
+    creationLayer.objects.forEach(creationPoint => {
+      const enemy = new enemyTypes[creationPoint.type](this, creationPoint.x, creationPoint.y);
+      enemies.add(enemy);
     })
-    
+
+    return enemies;
   }
 
    createEnemyColliders(enemies, { colliders }) {
-     enemies.forEach(enemy => {
-      enemy 
+    enemies.forEach(enemy => {
+      enemies
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.player);
-     });
-    
-   }
+    })
+  }
+
 
 
   //renders the map of the level
@@ -67,20 +78,19 @@ class Play extends Phaser.Scene {
     const location = map.createLayer("environment", setTiles);
     const platforms = map.createLayer("platforms", setTiles);
     const playerZones = map.getObjectLayer("player_zones");
+    const enemySpawns = map.getObjectLayer('enemy_spawns');
 
-    const enemyIncoming = map.getObjectLayer('enemy_spawns')
+    
 
     //Phaser executes that any tiles larger than 0 will collide
     platformsColliders.setCollisionByProperty({ collides: true });
 
-    return { location, platforms, platformsColliders, playerZones, enemyIncoming };
+
+    return { location, platforms, platformsColliders, playerZones, enemySpawns };
+
   }
 
-  createPlayer(start) {
-    // const player = this.physics.add.sprite(100, 250, 'player');
-
-    return new Player(this, start.x, start.y);
-  }
+  
 
   createPlayerColliders(player, { colliders }) {
     player.addCollider(colliders.platformsColliders);
