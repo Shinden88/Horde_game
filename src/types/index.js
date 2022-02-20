@@ -1,5 +1,5 @@
 import Wizard from '../entities/Wizard';
 
-export const EnemyTypes = {
+export const ENEMY_TYPES = {
         Wizard
 }
