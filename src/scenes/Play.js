@@ -54,11 +54,11 @@ class Play extends Phaser.Scene {
   }
 
    createEnemyColliders(enemies, { colliders }) {
-    enemies.forEach(enemy => {
+   
       enemies
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.player);
-    })
+  
   }
 
 
