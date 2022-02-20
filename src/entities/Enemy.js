@@ -15,7 +15,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-    this.gravity = 500;
+    this.gravity = 700;
     this.speed = 150;
 
     this.body.setGravityY(this.gravity);
@@ -29,7 +29,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     //adjust later once map done
     this.setImmovable(true);
 
-    this.setOrigin(0.5, 1);
+    this.setOrigin(0);
   }
 
   initEvents() {
