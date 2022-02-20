@@ -1,3 +1,4 @@
+import Phaser from "phaser"
 export default anims => {
 
     anims.create({
