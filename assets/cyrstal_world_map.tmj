@@ -80,9 +80,44 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":17,
+         "name":"enemy_spawns",
+         "objects":[
+                {
+                 "height":0,
+                 "id":3,
+                 "name":"spawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"Wizard",
+                 "visible":true,
+                 "width":0,
+                 "x":277.333333333333,
+                 "y":306.666666666667
+                }, 
+                {
+                 "height":0,
+                 "id":4,
+                 "name":"spawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"Wizard",
+                 "visible":true,
+                 "width":0,
+                 "x":597.333333333333,
+                 "y":122.666666666667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":17,
- "nextobjectid":3,
+ "nextlayerid":18,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.2",
