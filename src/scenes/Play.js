@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Player from "../entities/Player";
-import Wizard from "../entities/Wizard";
+import Enemies from "../groups/Enemies";
 
 class Play extends Phaser.Scene {
   constructor(config) {
@@ -15,33 +15,50 @@ class Play extends Phaser.Scene {
     const playerZones = this.getPlayerZones(setLayer.playerZones);
 
     const player = this.createPlayer(playerZones.start);
-    const enemy = this.createEnemy();
+    const enemies = this.createEnemies(setLayer.enemySpawns);
 
 
-    this.createEnemyColliders(enemy, {
+    this.createEnemyColliders(enemies, {
       colliders: {
-      platformsColliders: setLayer.platformsColliders
+      platformsColliders: setLayer.platformsColliders, player
       }
-    })
+    });
 
     this.createPlayerColliders(player, {
       colliders: {
         platformsColliders: setLayer.platformsColliders,
-      },
+      }
     });
+
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
   }
 
+  createPlayer(start) {
+    // const player = this.physics.add.sprite(100, 250, 'player');
 
-  createEnemy() {
-    return new Wizard(this, 200, 200);
+    return new Player(this, start.x, start.y);
   }
 
-   createEnemyColliders(enemy, { colliders }) {
-     enemy 
-     .addCollider(colliders.platformsColliders)
-   }
+  createEnemies(creationLayer) {
+    const enemies = new Enemies(this);
+    const enemyTypes = enemies.getTypes();
+
+    creationLayer.objects.forEach(creationPoint => {
+      const enemy = new enemyTypes[creationPoint.type](this, creationPoint.x, creationPoint.y);
+      enemies.add(enemy);
+    })
+
+    return enemies;
+  }
+
+   createEnemyColliders(enemies, { colliders }) {
+    enemies.forEach(enemy => {
+      enemies
+      .addCollider(colliders.platformsColliders)
+      .addCollider(colliders.player);
+    })
+  }
 
 
   //renders the map of the level
@@ -61,18 +78,15 @@ class Play extends Phaser.Scene {
     const platforms = map.createLayer("platforms", setTiles);
 
     const playerZones = map.getObjectLayer("player_zones");
+    const enemySpawns = map.getObjectLayer('enemy_spawns');
 
     //Phaser executes that any tiles larger than 0 will collide
     platformsColliders.setCollisionByProperty({ collides: true });
 
-    return { location, platforms, platformsColliders, playerZones };
+    return { location, platforms, platformsColliders, playerZones, enemySpawns };
   }
 
-  createPlayer(start) {
-    // const player = this.physics.add.sprite(100, 250, 'player');
-
-    return new Player(this, start.x, start.y);
-  }
+  
 
   createPlayerColliders(player, { colliders }) {
     player.addCollider(colliders.platformsColliders);
