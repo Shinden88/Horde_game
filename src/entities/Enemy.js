@@ -1,3 +1,5 @@
+
+  
 import Phaser from "phaser";
 import collidable from "../mixins/collidable";
 
@@ -15,7 +17,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-    this.gravity = 700;
+    this.gravity = 500;
     this.speed = 150;
 
     this.body.setGravityY(this.gravity);
@@ -23,14 +25,14 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     //adjust later once map done
     this.setSize(150, 150);
     this.setDisplaySize(200, 200);
-    this.setOffset(7, 20);
+    this.setOffset(2, 1);
 
 
     this.setCollideWorldBounds(true);
     //adjust later once map done
     this.setImmovable(true);
 
-    this.setOrigin(0);
+    this.setOrigin(0.5, 1);
   }
 
   initEvents() {
@@ -39,6 +41,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta) {
     this.setVelocityX(30);
+ 
+
+
   }
 }
 
