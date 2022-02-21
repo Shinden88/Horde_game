@@ -31,6 +31,7 @@ class Play extends Phaser.Scene {
     });
 
     this.createEndOfLevel(playerZones.end, player);
+
     this.setupFollowupCameraOn(player);
 
     this.graphics = this.add.graphics();
@@ -44,13 +45,16 @@ class Play extends Phaser.Scene {
   startDrawing(pointer) {
     this.line.x1 = pointer.worldX;
     this.line.y1 = pointer.worldY;
+    this.plotting = true;
   }
 
   finishDrawing(pointer) {
     this.line.x2 = pointer.worldX;
     this.line.y2 = pointer.worldY;
 
+    this.graphics.clear();
     this.graphics.strokeLineShape(this.line);
+    this.plotting = false;
   }
 
 
@@ -78,6 +82,9 @@ class Play extends Phaser.Scene {
     .addCollider(colliders.platformsColliders);
   }
 
+
+
+  
    createEnemyColliders(enemies, { colliders }) {
       enemies
       .addCollider(colliders.platformsColliders)
@@ -85,21 +92,6 @@ class Play extends Phaser.Scene {
       .addCollider(colliders.player);
   
   }
-
-  startDrawing(pointer) {
-    this.linex2 = pointer.worldX;
-    this.line.y2 = pointer.worldY;
-
-    this.graphics.strokeLineShape(this.line);
-  }
-
-  finishDrawing(pointer) {
-    this.line.x2 = pointer.worldX;
-    this.line.y2 =pointer.worldY;
-
-    this.graphics.strokeLineShape(this.line);
-  }
-
 
 
   //renders the map of the level
@@ -134,12 +126,21 @@ class Play extends Phaser.Scene {
 
 
   setupFollowupCameraOn(player) {
-    const { height, width, mapOffset, zoomFactor } = this.config;
-    this.physics.world.setBounds(0, 0, width + mapOffset, height + 200);
-    this.cameras.main
-      .setBounds(0, 0, width + mapOffset, height)
-      .setZoom(zoomFactor);
-    this.cameras.main.startFollow(player);
+    // const { height, width, mapOffset, zoomFactor } = this.config;
+    // this.physics.world.setBounds(0, 0, width + mapOffset, height + 200);
+    // this.cameras.main
+    //   .setBounds(0, 0, width + mapOffset, height)
+    //   .setZoom(zoomFactor);
+    // this.cameras.main.startFollow(player);
+
+
+    this.plotting = false;
+    this.graphics = this.add.graphics();
+    this.line = new Phaser.Geom.Line();
+    this.graphics.lineStyle(1, 0x00ff00)
+
+    this.input. on('pointerrdown', this.startDrawing, this);
+    this.input.on('pointerup', this.finishDrawing, this)
   }
 
   getPlayerZones(playerZonesLayer) {
@@ -162,12 +163,15 @@ class Play extends Phaser.Scene {
     });
   }
    update() {
+     if (this.plotting) {
      const pointer = this.input.activePointer;
 
      this.line.x2 = pointer.worldX;
      this.line.x2 = pointer.worldY;
 
+     this.graphics.clear();
      this.graphics.strokeLineShape(this.line);
+     }
    }
-}
+ }
 export default Play;
