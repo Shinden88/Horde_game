@@ -145,7 +145,7 @@ class Play extends Phaser.Scene {
     const endOfLevel = this.physics.add
       .sprite(end.x, end.y, "end")
       .setAlpha(0)
-      .setSize(5, this.config.height)
+      .setSize(5, 30)
       .setOrigin(0.5, 1);
 
     const endOverlap = this.physics.add.overlap(player, endOfLevel, () => {
