@@ -14,28 +14,29 @@ class Play extends Phaser.Scene {
 
     const map = this.createMap();
 
-    const setLayer = this.createLayers(map);
-    const playerZones = this.getPlayerZones(setLayer.playerZones);
+    const layers = this.createLayers(map);
+    const playerZones = this.getPlayerZones(layers.playerZones);
 
     const player = this.createPlayer(playerZones.start);
-    const enemies = this.createEnemies(setLayer.enemySpawns, setLayer.platformsColliders);
+    const enemies = this.createEnemies(layers.enemySpawns, layers.platformsColliders);
 
-
+    
     this.createEnemyColliders(enemies, {
       colliders: {
-      platformsColliders: setLayer.platformsColliders, player
+      platformsColliders: layers.platformsColliders, player
       }
     });
 
     this.createPlayerColliders(player, {
       colliders: {
-        platformsColliders: setLayer.platformsColliders
+        platformsColliders: layers.platformsColliders
       }
     });
 
     this.createEndOfLevel(playerZones.end, player);
 
     this.setupFollowupCameraOn(player);
+
     
   }
 
@@ -43,16 +44,16 @@ class Play extends Phaser.Scene {
     if (this.sound.get('theme')) { return; }
 
     this.sound.add('theme', {loop: true, volume: 0.03}).play();
-  }
+    }
 
-  finishDrawing(pointer, setLayer) {
+  finishDrawing(pointer, layer) {
     this.line.x2 = pointer.worldX;
     this.line.y2 = pointer.worldY;
 
     this.graphics.clear();
     this.graphics.strokeLineShape(this.line);
 
-    this.tileHits = setLayer.getTilesWithinShape(this.line);
+    this.tileHits = layer.getTilesWithinShape(this.line);
 
     if (this.tileHits.length > 0) {
       this.tileHits.forEach(tile => {
@@ -60,50 +61,10 @@ class Play extends Phaser.Scene {
       })
     }
 
-    this.drawDebug(setLayer);
+    this.drawDebug(layer);
 
     this.plotting = false;
   }
-
-
-
-
-  createPlayer(start) {
-
-
-    return new Player(this, start.x, start.y);
-  }
-
-  createEnemies(creationLayer, platformsColliders) {
-    const enemies = new Enemies(this);
-    const enemyTypes = enemies.getTypes();
-
-    creationLayer.objects.forEach((creationPoint, i) => {
-     // if (i === 1) { return; }
-      const enemy = new enemyTypes[creationPoint.type](this, creationPoint.x, creationPoint.y);
-      enemy.setPlatformColliders(platformsColliders)
-      enemies.add(enemy);
-    })
-
-    return enemies;
-  }
-
-  createPlayerColliders(player, { colliders }) {
-    player
-    .addCollider(colliders.platformsColliders);
-  }
-
-
-
-  
-   createEnemyColliders(enemies, { colliders }) {
-      enemies
-      .addCollider(colliders.platformsColliders)
-      
-      .addCollider(colliders.player);
-  
-  }
-
 
   //renders the map of the level
   createMap() {
@@ -132,9 +93,37 @@ class Play extends Phaser.Scene {
 
   }
 
-  
+
+  createPlayer(start) {
 
 
+    return new Player(this, start.x, start.y);
+  }
+
+  createEnemies(creationLayer, platformsColliders) {
+    const enemies = new Enemies(this);
+    const enemyTypes = enemies.getTypes();
+
+    creationLayer.objects.forEach((creationPoint, i) => {
+     if (i === 1) { return; }
+      const enemy = new enemyTypes[creationPoint.type](this, creationPoint.x, creationPoint.y);
+      enemy.setPlatformColliders(platformsColliders)
+      enemies.add(enemy);
+    })
+
+    return enemies;
+  }
+
+  createEnemyColliders(enemies, { colliders }) {
+    enemies
+      .addCollider(colliders.platformsColliders)
+      .addCollider(colliders.player);
+  }
+
+  createPlayerColliders(player, { colliders }) {
+    player
+      .addCollider(colliders.platformsColliders)
+  }
 
   
   setupFollowupCameraOn(player) {
@@ -147,29 +136,22 @@ class Play extends Phaser.Scene {
   getPlayerZones(playerZonesLayer) {
     const playerZones = playerZonesLayer.objects;
     return {
-      start: playerZones.find((zone) => zone.name === "startZone"),
-      end: playerZones.find((zone) => zone.name === "endZone"),
+      start: playerZones.find(zone => zone.name === "startZone"),
+      end: playerZones.find(zone => zone.name === "endZone"),
     };
   }
 
 
   createEndOfLevel(end, player) {
-    const endOfLevel = this.physics.add
-      .sprite(end.x, end.y, "end")
+    const endOfLevel = this.physics.add.sprite(end.x, end.y, "end")
       .setAlpha(0)
-<<<<<<< HEAD
       .setSize(5, 30)
-=======
-
-      .setSize(5, 30)
-
->>>>>>> 4414988b8e502d8cf78183d2fc67d3b31b69c7c1
       .setOrigin(0.5, 1);
 
     const endOverlap = this.physics.add.overlap(player, endOfLevel, () => {
       endOverlap.active = false;
       console.log("You win!");
-    });
+    })
   }
 
 
