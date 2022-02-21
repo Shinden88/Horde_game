@@ -46,7 +46,7 @@ class Play extends Phaser.Scene {
   
 
   drawDebug(setLayer) {
-    const collidingTileColor = new Phaser.Display.Color(243, 134, 48, 200);
+    const collidingTileColor = new Phaser.Display.Color(243, 134, 48, 255);
     setLayer.renderDebug(this.graphics, {
       tileColor: null,
       collidingTileColor
@@ -54,12 +54,12 @@ class Play extends Phaser.Scene {
   }
 
   startDrawing(pointer) {
-
-    if(this.tileHits && this.tileHits.length > 0) {
-      this.titleHits.ForEach(tile => {
+    if (this.tileHits && this.tileHits.length > 0) {
+      this.tileHits.forEach(tile => {
         tile.index !== -1 && tile.setCollision(false)
       })
     }
+
     this.line.x1 = pointer.worldX;
     this.line.y1 = pointer.worldY;
     this.plotting = true;
@@ -72,19 +72,18 @@ class Play extends Phaser.Scene {
     this.graphics.clear();
     this.graphics.strokeLineShape(this.line);
 
-    this.tileHits = setLayer.getTilesWithinShape;
+    this.tileHits = setLayer.getTilesWithinShape(this.line);
 
     if (this.tileHits.length > 0) {
-        this.titleHits.ForEach(title => {
-          title.index !== -1 && this.tileHits.setCollision(true)
-        })
+      this.tileHits.forEach(tile => {
+        tile.index !== -1 && tile.setCollision(true)
+      })
     }
 
-    this.drawDebug(setLayer)
+    this.drawDebug(setLayer);
 
     this.plotting = false;
   }
-
 
   createPlayer(start) {
 
