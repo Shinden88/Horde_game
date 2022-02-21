@@ -20,6 +20,8 @@ class Preload extends Phaser.Scene {
     this.load.spritesheet('wizard', 'assets/enemy/wizard_moves1.png', {frameWidth: 250, frameHeight: 250
     })
 
+    this.load.audio('theme', "assets/music/TheBard'sTale.wav");
+
     
   }
 
