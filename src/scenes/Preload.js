@@ -17,8 +17,13 @@ class Preload extends Phaser.Scene {
     // this.load.spritesheet('player', 'assets/Character_Sprite_Sheet.png', {frameWidth: 83, frameHeight: 64
     // })
     //fix this find out actual dimensions/spacing
-    this.load.spritesheet('wizard', 'assets/enemy/wizard_moves1.png', {frameWidth: 250, frameHeight: 250
+    // this.load.spritesheet('wizard', 'assets/enemy/wizard_moves1.png', {frameWidth: 250, frameHeight: 250
+    // })
+
+    this.load.spritesheet('birdman', 'assets/enemy/enemy_sheet.png', {
+      frameWidth: 32, frameHeight: 64, spacing: 32
     })
+  
 
     this.load.audio('theme', "assets/music/TheBard'sTale.wav");
 

@@ -10,7 +10,8 @@ class Wizard extends Enemy {
 
   update(time, delta) {
     super.update(time,delta);
-    this.play('wizard-idle', true);
+    // this.play('wizard-idle', true);
+    this.play('birdman-idle', true);
 
   }
 }
