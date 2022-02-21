@@ -67,7 +67,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
 
 
-      this.damage = 20;
+      this.damage = 10;
     }
 
 
