@@ -183,15 +183,6 @@ class Play extends Phaser.Scene {
 
 
 
-  update() {
-    if (this.plotting) {
-      const pointer = this.input.activePointer;
-
-      this.line.x2 = pointer.worldX;
-      this.line.y2 = pointer.worldY;
-      this.graphics.clear();
-      this.graphics.strokeLineShape(this.line);
-    }
-   }
+  
  }
 export default Play;
