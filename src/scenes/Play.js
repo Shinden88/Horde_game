@@ -26,43 +26,61 @@ class Play extends Phaser.Scene {
 
     this.createPlayerColliders(player, {
       colliders: {
-        platformsColliders: setLayer.platformsColliders,
+        platformsColliders: setLayer.platformsColliders
       }
     });
 
     this.createEndOfLevel(playerZones.end, player);
 
     this.setupFollowupCameraOn(player);
+    this.plotting = false;
 
     this.graphics = this.add.graphics();
     this.line = new Phaser.Geom.Line();
     this.graphics.lineStyle(1, 0x00ff00);
 
     this.input.on('pointerdown', this.startDrawing, this);
-    this.input.on('pointerup', (pointer) => this.finishDrawing(pointer, setLayer.platforms), this)
+    this.input.on('pointerup', pointer => this.finishDrawing(pointer, setLayer.platforms), this);
+  }
   
+  
+
+  drawDebug(setLayer) {
+    const collidingTileColor = new Phaser.Display.Color(243, 134, 48, 200);
+    setLayer.renderDebug(this.graphics, {
+      tileColor: null,
+      collidingTileColor
+    })
   }
 
   startDrawing(pointer) {
+
+    if(this.tileHits && this.tileHits.length > 0) {
+      this.titleHits.ForEach(tile => {
+        tile.index !== -1 && tile.setCollision(false)
+      })
+    }
     this.line.x1 = pointer.worldX;
     this.line.y1 = pointer.worldY;
     this.plotting = true;
   }
 
-  finishDrawing(pointer) {
+  finishDrawing(pointer, setLayer) {
     this.line.x2 = pointer.worldX;
     this.line.y2 = pointer.worldY;
 
     this.graphics.clear();
     this.graphics.strokeLineShape(this.line);
 
-    this.tileHits = layer.getTileWithShape;
+    this.tileHits = setLayer.getTilesWithinShape;
 
     if (this.tileHits.length > 0) {
         this.titleHits.ForEach(title => {
-          title.index !== -1 && consolelog('Platform is hit!');
+          title.index !== -1 && this.tileHits.setCollision(true)
         })
     }
+
+    this.drawDebug(setLayer)
 
     this.plotting = false;
   }
