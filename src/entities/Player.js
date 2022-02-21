@@ -23,7 +23,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.consecutiveJumps = 1;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-
+ 
 
     this.body.setSize(20,37);
     this.setDisplaySize(50, 37);
@@ -69,6 +69,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         ? this.play("run", true)
         : this.play("idle", true)
       : this.play("jump", true);
+  }
+
+  takesHit() {
+    console.log('I have been hit');
   }
 }
 
