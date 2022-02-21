@@ -119,3 +119,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
 export default Player;
+
+// this.health -= initiator.damage;
+// this.hp.decrease(this.health);
