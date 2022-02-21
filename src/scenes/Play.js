@@ -33,36 +33,7 @@ class Play extends Phaser.Scene {
     this.createEndOfLevel(playerZones.end, player);
 
     this.setupFollowupCameraOn(player);
-    this.plotting = false;
-
-    this.graphics = this.add.graphics();
-    this.line = new Phaser.Geom.Line();
-    this.graphics.lineStyle(1, 0x00ff00);
-
-    this.input.on('pointerdown', this.startDrawing, this);
-    this.input.on('pointerup', pointer => this.finishDrawing(pointer, setLayer.platforms), this);
-  }
-  
-  
-
-  drawDebug(setLayer) {
-    const collidingTileColor = new Phaser.Display.Color(243, 134, 48, 255);
-    setLayer.renderDebug(this.graphics, {
-      tileColor: null,
-      collidingTileColor
-    })
-  }
-
-  startDrawing(pointer) {
-    if (this.tileHits && this.tileHits.length > 0) {
-      this.tileHits.forEach(tile => {
-        tile.index !== -1 && tile.setCollision(false)
-      })
-    }
-
-    this.line.x1 = pointer.worldX;
-    this.line.y1 = pointer.worldY;
-    this.plotting = true;
+    
   }
 
   finishDrawing(pointer, setLayer) {
