@@ -1,9 +1,9 @@
 import Enemy from './Enemy';
 import initializeAnimations from './Animations/WizardAnimation';
 
-class Wizard extends Enemy {
+class Birdman extends Enemy {
   constructor(scene, x, y) {
-    super(scene, x, y, "wizard");
+    super(scene, x, y, "birdman");
 
     initializeAnimations(scene.anims);
   }
@@ -16,4 +16,4 @@ class Wizard extends Enemy {
   }
 }
 
-export default Wizard;
+export default Birdman;
