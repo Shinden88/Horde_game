@@ -30,17 +30,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.bounceVelocity = 250;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-    //healthbar
-    this.health = 100;
-    this.hp = new HealthBar(
-      this.scene,
-      this.scene.config.leftTopCorner.x,
-      this.scene.config.leftTopCorner.y,
-      this.health
-    )
+    // //healthbar
+    // this.health = 100;
+    // this.hp = new HealthBar(
+    //   this.scene,
+    //   this.scene.config.leftTopCorner.x,
+    //   this.scene.config.leftTopCorner.y,
+    //   this.health
+    // )
     
 
-    //healthbar
+    // //healthbar
 
 
 
@@ -94,7 +94,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 playDamageTween() {
   this.scene.tweens.add({
-    target:this,
+    targets:this,
     duration: 100,
     repeat: 4,
     tint: 0xffffff
