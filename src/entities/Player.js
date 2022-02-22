@@ -93,10 +93,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
 playDamageTween() {
-  this.scene.tweens.add({
+  return this.scene.tweens.add({
     targets:this,
     duration: 100,
-    repeat: 4,
+    repeat: -1,
     tint: 0xffffff
 
   })
@@ -118,9 +118,13 @@ playDamageTween() {
     if (this.hasBeenHit) { return; }
     this.hasBeenHit = true;
     this.bounceOff();
-    this.playDamageTween()
+    const hitAnim = this.playDamageTween()
 
-    this.scene.time.delayedCall(1000, () => this.hasBeenHit = false )
+    this.scene.time.delayedCall(1000, () => {
+      this.hasBeenHit = false 
+      hitAnim.stop();
+      this.clearTint();
+    })
 
     // this.scene.time.addEvent({
     //   delay: 1000,
