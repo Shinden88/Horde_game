@@ -6,6 +6,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
 
+    this.config = scene.config;
+
+
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
@@ -62,8 +65,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.currentPatrolDistance = 0;
     }
 
-    this.rayGraphics.clear();
+
+    if (this.config.debug) {
+      this.rayGraphics.clear();
     this.rayGraphics.strokeLineShape(ray);
+    }
+    
   }
 
   setPlatformColliders(platformCollidersLayer) {
