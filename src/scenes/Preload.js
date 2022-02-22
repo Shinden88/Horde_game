@@ -11,11 +11,11 @@ class Preload extends Phaser.Scene {
     this.load.image('tilesOne', 'assets/main_lev_build_1.png');
     this.load.image('tilesTwo', 'assets/main_lev_build_2.png');
     // this.load.image('player', 'assets/player/movements/idle100.png');
-    this.load.spritesheet('player', 'assets/player/moves_1.png', {frameWidth: 60, frameHeight: 37
-    })
-//if time will change to this player
-    // this.load.spritesheet('player', 'assets/Character_Sprite_Sheet.png', {frameWidth: 83, frameHeight: 64
+    // this.load.spritesheet('player', 'assets/player/moves_1.png', {frameWidth: 60, frameHeight: 37
     // })
+//if time will change to this player
+    this.load.spritesheet('player', 'assets/Character_Sprite_Sheet.png', {frameWidth: 82, frameHeight: 64, spacing: 0.75
+    })
     //fix this find out actual dimensions/spacing
     // this.load.spritesheet('wizard', 'assets/enemy/wizard_moves1.png', {frameWidth: 250, frameHeight: 250
     // })
