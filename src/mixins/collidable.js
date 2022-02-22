@@ -46,6 +46,7 @@ export default {
           line.y1 = y + halfHeight;
           line.x2 = line.x1 + raylength;
           line.y2 = line.y1 + raylength;
+          console.log(line.x1, line.y1, line.x2, line.y2)
           break;
         }
         case Phaser.Physics.Arcade.FACING_LEFT: {
@@ -59,9 +60,12 @@ export default {
 
     const hits = layer.getTilesWithinShape(line);
 
+    
+
     if (hits.length > 0) {
       // some will return true if at least one element satisfy the condition hit.index !== -1
-      hasHit = this.prevHasHit = hits.some((hit) => hit.index !== -1);
+      hasHit = hits.some((hit) => hit.index !== -1);
+
     }
 
     this.prevRay = line;

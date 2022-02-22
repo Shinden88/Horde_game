@@ -127,7 +127,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     //   console.log('Hitting the platform!');
     // }
 
-    if (!hasHit) {
+    if (hasHit) {
       this.setFlipX(!this.flipX);
       this.setVelocityX(this.speed = -this.speed);
     }
