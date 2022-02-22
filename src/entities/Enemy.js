@@ -63,6 +63,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityX(this.speed = -this.speed);
       this.timeFromLastTurn = time;
       this.currentPatrolDistance = 0;
+
+
+
+
+      this.damage = 10;
     }
 
     if (this.config.debug) {
