@@ -105,7 +105,7 @@ class Play extends Phaser.Scene {
     const enemyTypes = enemies.getTypes();
 
     creationLayer.objects.forEach((creationPoint, i) => {
-    //  if (i === 1) { return; }
+     if (i === 1) { return; }
       const enemy = new enemyTypes[creationPoint.type](this, creationPoint.x, creationPoint.y);
       enemy.setPlatformColliders(platformsColliders)
       enemies.add(enemy);
@@ -115,7 +115,8 @@ class Play extends Phaser.Scene {
   }
 
   onPlayerCollision(enemy, player) {
-    player.takesHit();
+
+    player.takesHit(enemy);
   }
 
 
