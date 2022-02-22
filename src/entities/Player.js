@@ -84,8 +84,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   takesHit(initiator) {
-    // this.body.checkCollision.none = true;
-    if (this.ahsBeenHit) { return; }
+    
+    if (this.hasBeenHit) { return; }
     this.hasBeenHit = true;
     this.bounceOff();
   }
