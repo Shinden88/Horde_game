@@ -7,12 +7,14 @@ export default anims => {
         repeat: -1
       })
 
+    
       anims.create({
-        key: 'attack',
-        frames: anims.generateFrameNumbers('player', {start: 1, end: 7 }),
-        frameRate: 6,
-        repeat: -1
+        key: 'sword-default-swing',
+        frames: anims.generateFrameNumbers('sword-default', {start: 1, end: 7}),
+        frameRate: 20,
+        repeat: 0
       })
+  
 
     anims.create({
         key: 'run',

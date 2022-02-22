@@ -42,6 +42,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.setOrigin(0.5, 1);
 
     initializeAnimations(this.scene.anims);
+
+    this.scene.input.keyboard.on('keydown-Q', () => {
+      this.play('attack', true);
+      // this.projectiles.fireProjectile(this);
+    })
+  
   }
 
   initEvents() {
@@ -53,7 +59,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     }
     const { left, right, space, up } = this.cursors;
-    const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
+    const isUpJustDown = Phaser.Input.Keyboard.JustDown(up);
     const onFloor = this.body.onFloor();
 
     if (left.isDown) {
@@ -67,7 +73,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (
-      isSpaceJustDown &&
+      isUpJustDown &&
       (onFloor || this.jumpCount < this.consecutiveJumps)
     ) {
       this.setVelocityY(-this.playerSpeed * 2);
