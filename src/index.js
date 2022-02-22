@@ -7,6 +7,9 @@ const MAP_WIDTH = 1600;
 
 const WIDTH = document.body.offsetWidth;
 const HEIGHT = 600;
+//healthbar
+const ZOOM_FACTOR = 1.5;
+//healthbar
 
 const SHARED_CONFIG = {
   mapOffset: MAP_WIDTH > WIDTH ? MAP_WIDTH - WIDTH : 0,
@@ -35,5 +38,19 @@ const config = {
   },
   scene: initScenes()
 };
+
+//healthbar
+// zoomFactor: ZOOM_FACTOR,
+//   debug: false,
+//   leftTopCorner: {
+//     x: (WIDTH - (WIDTH / ZOOM_FACTOR)) / 2,
+//     y: (HEIGHT - (HEIGHT / ZOOM_FACTOR)) / 2
+//   },
+//   rightTopCorner: {
+//     x: ((WIDTH / ZOOM_FACTOR) + ((WIDTH - (WIDTH / ZOOM_FACTOR)) / 2)),
+//     y: (HEIGHT - (HEIGHT / ZOOM_FACTOR)) / 2
+//   }
+// }
+//healthbar
 
 new Phaser.Game(config);
