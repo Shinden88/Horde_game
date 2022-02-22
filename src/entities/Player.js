@@ -1,10 +1,7 @@
 import Phaser from "phaser";
 import initializeAnimations from "./Animations/PlayerAnimation.js";
-import collidable from '../mixins/collidable';
-
-//healthbar
-import HealthBar from '../hud/HealthBar';
-//health bar
+import collidable from "../mixins/collidable";
+import HealthBar from "../hud/HealthBar";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -12,7 +9,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    
 
     //Mixins
     Object.assign(this, collidable);
@@ -30,7 +26,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.bounceVelocity = 250;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
-
     //healthbar
     this.health = 100;
     this.hp = new HealthBar(
@@ -40,14 +35,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       2,
       this.health
     )
-
-    
-
-    // //healthbar
-
-
-
-    this.body.setSize(20,37);
+    this.body.setSize(20, 37);
     this.setDisplaySize(50, 37);
     this.body.setGravityY(this.gravity);
     this.setCollideWorldBounds(true);
@@ -61,7 +49,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    if (this.hasBeenHit) { return; } 
+    if (this.hasBeenHit) {
+      return;
+    }
     const { left, right, space, up } = this.cursors;
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
     const onFloor = this.body.onFloor();
@@ -94,40 +84,39 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       : this.play("jump", true);
   }
 
-
-playDamageTween() {
-  return this.scene.tweens.add({
-    targets:this,
-    duration: 100,
-    repeat: -1,
-    tint: 0xffffff
-
-  })
-}
-
-
+  playDamageTween() {
+    return this.scene.tweens.add({
+      targets: this,
+      duration: 100,
+      repeat: -1,
+      tint: 0xffffff,
+    });
+  }
 
   bounceOff() {
-    this.body.touching.right ?
-      this.setVelocityX(-this.bounceVelocity) :
-      this.setVelocityX(this.bounceVelocity);
+    this.body.touching.right
+      ? this.setVelocityX(-this.bounceVelocity)
+      : this.setVelocityX(this.bounceVelocity);
 
-      setTimeout(() => this.setVelocityY(-this.bounceVelocity), 0)
-
+    setTimeout(() => this.setVelocityY(-this.bounceVelocity), 0);
   }
 
   takesHit(initiator) {
-    
-    if (this.hasBeenHit) { return; }
+    if (this.hasBeenHit) {
+      return;
+    }
     this.hasBeenHit = true;
     this.bounceOff();
-    const hitAnim = this.playDamageTween()
+    const hitAnim = this.playDamageTween();
+
+    this.health -= initiator.damage;
+    this.hp.decrease(this.health);
 
     this.scene.time.delayedCall(1000, () => {
-      this.hasBeenHit = false 
+      this.hasBeenHit = false;
       hitAnim.stop();
       this.clearTint();
-    })
+    });
 
     // this.scene.time.addEvent({
     //   delay: 1000,
@@ -139,8 +128,4 @@ playDamageTween() {
   }
 }
 
-
 export default Player;
-
-// this.health -= initiator.damage;
-// this.hp.decrease(this.health);
