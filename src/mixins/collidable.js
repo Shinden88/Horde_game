@@ -16,7 +16,7 @@ export default {
   prevRay: null,
   prevHasHit: null,
 
-  raycast(body, layer, raylength = 30, precision = 0) {
+  raycast(body, layer, {raylength = 30, precision = 0, steepnes = 1}) {
     const { x, y, width, halfHeight } = body;
 
     this.bodyPositionDifferenceX += body.x - body.prev.x;
@@ -34,25 +34,18 @@ export default {
     const line = new Phaser.Geom.Line();
     let hasHit = false;
 
-    // line.x1 = x + width;
-    // line.y1 = y + halfHeight;
-    // line.x2 = line.x1 + raylength;
-    // line.y2 = line.y1 + raylength;
-
-    //i believe this is the problem
     switch(body.facing) {
         case Phaser.Physics.Arcade.FACING_RIGHT: {
           line.x1 = x + width;
           line.y1 = y + halfHeight;
-          line.x2 = line.x1 + raylength;
+          line.x2 = line.x1 + raylength * steepnes;
           line.y2 = line.y1 + raylength;
-          console.log(line.x1, line.y1, line.x2, line.y2)
           break;
         }
         case Phaser.Physics.Arcade.FACING_LEFT: {
           line.x1 = x;
           line.y1 = y + halfHeight;
-          line.x2 = line.x1 - raylength;
+          line.x2 = line.x1 - raylength * steepnes;
           line.y2 = line.y1 + raylength;
           break;
         }
