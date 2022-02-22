@@ -8,6 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+    
 
     //Mixins
     Object.assign(this, collidable);
@@ -74,6 +75,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       : this.play("jump", true);
   }
 
+
+playDamageTween() {
+  this.scene.tweens.add({
+    target:this,
+    duration: 100,
+    repeat: 4,
+    tint: 0xffffff
+
+  })
+}
+
+
+
   bounceOff() {
     this.body.touching.right ?
       this.setVelocityX(-this.bounceVelocity) :
@@ -88,6 +102,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) { return; }
     this.hasBeenHit = true;
     this.bounceOff();
+    this.playDamageTween()
+
+    this.scene.time.delayedCall(1000, () => this.hasBeenHit = false )
+
+    // this.scene.time.addEvent({
+    //   delay: 1000,
+    //   callback:  () => {
+    //     this.hasBeenHit = false;
+    //   },
+    //   loop: false
+    // })
   }
 }
 
