@@ -19,8 +19,8 @@ class Play extends Phaser.Scene {
 
     const player = this.createPlayer(playerZones.start);
     const enemies = this.createEnemies(layers.enemySpawns, layers.platformsColliders);
-    // this.player = player;
-    // this.enemies = enemies;
+    this.player = player;
+    this.enemies = enemies;
 
     
     this.createEnemyColliders(enemies, {
@@ -94,10 +94,18 @@ class Play extends Phaser.Scene {
     return { location, platforms, platformsColliders, playerZones, enemySpawns };
 
   }
-  
+ functiondistanceSq(object,target) {
+
+    var xDif = object.x - target.x;
+    var yDif = object.y - target.y;
+
+    return (xDif * xDif) + (yDif * yDif);
+
+};
   range() {
-    const x1 = this.player.x;
-    const y1  = this.player.y;
+    
+    this.player.x = x1;
+     this.player.y = y1
     for (let enemy in this.enemies) {
       const x2 = enemy.x;
       const y2 = enemy.y

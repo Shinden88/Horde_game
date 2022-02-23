@@ -2,9 +2,10 @@ import Phaser from "phaser";
 import initializeAnimations from "./Animations/PlayerAnimation.js";
 import collidable from "../mixins/collidable";
 import HealthBar from "../hud/HealthBar";
+import Projectile from "../attacks/Projectile";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, Range) {
+  constructor(scene, x, y) {
     super(scene, x, y, "player");
 
     scene.add.existing(this);
@@ -15,7 +16,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.init();
     this.initEvents();
-    this.range = Range
   }
 
   init() {
@@ -36,7 +36,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       2,
       this.health
     )
-    this.damage = 40;
     this.body.setSize(20, 37);
     this.setDisplaySize(50, 37);
     this.body.setGravityY(this.gravity);
@@ -44,6 +43,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.setOrigin(0.5, 1);
 
     initializeAnimations(this.scene.anims);
+
+
+    this.scene.input.keyboard.on('keydown-Q', () => {
+      console.log('pressing Q');
+      const projectile = new Projectile (this.scene, this.x, this.y, 'iceball')
+      projectile.fire();
+    })
   }
 
   initEvents() {
@@ -54,10 +60,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
-    const { left, right, up, space} = this.cursors;
+    const { left, right, space, up } = this.cursors;
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
-    // const isAJustDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
-
     const onFloor = this.body.onFloor();
 
     if (left.isDown) {
@@ -70,7 +74,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityX(0);
     }
 
-    if (up.isDown &&
+    if (
+      isSpaceJustDown &&
       (onFloor || this.jumpCount < this.consecutiveJumps)
     ) {
       this.setVelocityY(-this.playerSpeed * 2);
@@ -80,24 +85,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.jumpCount = 0;
     }
 
-    if (isSpaceJustDown && 
-      onFloor) {
-      this.range();
-      this.play("attack", true);
-      } else  {
-     this.play("attack", true);
-      }
-//if they are on the floor and within range the attack
-//attack player anim & enemy anim plus damage they dissappear
-//else just play attack anim
-
 
     onFloor
       ? this.body.velocity.x !== 0
         ? this.play("run", true)
         : this.play("idle", true)
-      : this.play("jump", true)
-      
+      : this.play("jump", true);
   }
 
   playDamageTween() {
@@ -106,10 +99,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       duration: 100,
       repeat: -1,
       tint: 0xffffff,
-    }); 
+    });
   }
-
-  
 
   bounceOff() {
     this.body.touching.right
@@ -119,7 +110,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     setTimeout(() => this.setVelocityY(-this.bounceVelocity), 0);
   }
 
-  takesHit(source) {
+  takesHit(initiator) {
     if (this.hasBeenHit) {
       return;
     }
@@ -127,7 +118,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.bounceOff();
     const hitAnim = this.playDamageTween();
 
-    this.health -= source.damage;
+    this.health -= initiator.damage;
     this.hp.decrease(this.health);
 
     this.scene.time.delayedCall(1000, () => {
@@ -136,10 +127,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.clearTint();
     });
 
-
-
-
-    
     // this.scene.time.addEvent({
     //   delay: 1000,
     //   callback:  () => {
