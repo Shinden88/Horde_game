@@ -2,8 +2,10 @@ import Phaser from 'phaser';
 
 import collidable from '../mixins/collidable';
 
+import anims from '../mixins/anims';
+
 class Enemy extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key, Range) {
+  constructor(scene, x, y, key) {
     super(scene, x, y, key);
 
 
@@ -14,6 +16,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     // Mixins
     Object.assign(this, collidable);
+    Object.assign(this, anims);
 
     this.init();
     this.initEvents();
@@ -25,8 +28,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.timeFromLastTurn = 0;
     this.maxPatrolDistance = 200;
     this.currentPatrolDistance = 0;
-    this.health = 40;
-    this.hasBeenHit = false;
+    this.health = 100;
+    this.damage= 40;
+    // this.hasBeenHit = false;
 
     this.platformCollidersLayer = null;
     this.rayGraphics = this.scene.add.graphics({lineStyle: {width: 2, color: 0xaa00aa}});
@@ -71,20 +75,33 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
 
 
-      this.damage = 10;
+      // this.damage = 10;
     }
 
-    if (this.config.debug) {
+    if (this.config.debug && ray) {
       this.rayGraphics.clear();
-    this.rayGraphics.strokeLineShape(ray);
+      this.rayGraphics.strokeLineShape(ray);
     }
-    
   }
 
 
   setPlatformColliders(platformCollidersLayer) {
     this.platformCollidersLayer = platformCollidersLayer;
   }
+
+  takesHit(source) {
+    source.deliversHit(this);
+      this.health -= source.damage;
+
+
+      if (this.health <= 0) {
+        console.log('Enemy is terminated')
+      }
+  }
+
+
+
+
 
   // //sword hit stuff
   // playDamageEnemy() {

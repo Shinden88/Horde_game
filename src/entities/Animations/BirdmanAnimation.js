@@ -7,10 +7,11 @@ export default (anims) => {
     repeat: -1
   })
 
+  //enemy dies
   anims.create({
     key: 'birdman-hurt',
     frames: anims.generateFrameNumbers('birdman', {start: 25, end: 26}),
-    frameRate: 10,
+    frameRate: 5,
     repeat: 0
   })
 };

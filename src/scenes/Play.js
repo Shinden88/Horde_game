@@ -1,11 +1,15 @@
 import Phaser from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
+import initAnims from "../anims";
 
 class Play extends Phaser.Scene {
   constructor(config) {
     super("PlayScene");
     this.config = config;
+
+
+   
   }
 
   create() {
@@ -36,8 +40,8 @@ class Play extends Phaser.Scene {
     });
 
     this.createEndOfLevel(playerZones.end, player);
-
     this.setupFollowupCameraOn(player);
+    initAnims(this.anims);
 
     
   }
@@ -102,20 +106,20 @@ class Play extends Phaser.Scene {
     return (xDif * xDif) + (yDif * yDif);
 
 };
-  range() {
+  // range() {
     
-    this.player.x = x1;
-     this.player.y = y1
-    for (let enemy in this.enemies) {
-      const x2 = enemy.x;
-      const y2 = enemy.y
-     const inRange = Between(x1, y1, x2, y2);
-     if (inRange < 10) {
-     enemy.takesHit(this.player);
-    } 
+  //   this.player.x = x1;
+  //    this.player.y = y1
+  //   for (let enemy in this.enemies) {
+  //     const x2 = enemy.x;
+  //     const y2 = enemy.y
+  //    const inRange = Between(x1, y1, x2, y2);
+  //    if (inRange < 10) {
+  //    enemy.takesHit(this.player);
+  //   } 
 
-  }
-  }
+  // }
+  // }
 
   createPlayer(start) {
 
@@ -148,10 +152,16 @@ class Play extends Phaser.Scene {
   }
 
 
+  onWeaponHit(entity, source) {
+    
+    entity.takesHit(source);
+  }
+
   createEnemyColliders(enemies, { colliders }) {
     enemies
       .addCollider(colliders.platformsColliders)
-      .addCollider(colliders.player, this.onPlayerCollision);
+      .addCollider(colliders.player, this.onPlayerCollision)
+      .addCollider(colliders.player.projectiles, this.onWeaponHit);
   }
 
   createPlayerColliders(player, { colliders }) {
