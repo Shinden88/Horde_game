@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
+import Collectable from "../collectables/Collectable";
 // import Hud from "../hud/HealthBar";
 // import EventEmitter from "../events/Emitter";
 
@@ -98,10 +99,10 @@ class Play extends Phaser.Scene {
 
 
   createCollectables(collectableLayer) {
-    const collectables = this.physics.add.staticGroup();
+    const collectables = this.physics.add.staticGroup().setDepth(-1);
 
     collectableLayer.objects.forEach(collectableO => {
-      collectables.get(collectableO.x, collectableO.y, 'potionPurple').setDepth(-1);
+      collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
     })
 
     return collectables;
@@ -169,6 +170,12 @@ class Play extends Phaser.Scene {
     entity.takesHit(source);
   }
 
+onCollect(entity, collectable) {
+  console.log();('collecting!');
+}
+
+
+
   createEnemyColliders(enemies, { colliders }) {
     enemies
       .addCollider(colliders.platformsColliders)
@@ -179,7 +186,9 @@ class Play extends Phaser.Scene {
   createPlayerColliders(player, { colliders }) {
     player
       .addCollider(colliders.platformsColliders)
-      .addCollider(colliders.enemies, this.enemyCollision);
+      .addCollider(colliders.projectiles, this.onWeaponHit)
+      .addOverlap(colliders.collectables, this.onCollect)
+     // this.enemyCollision
   }
 
   setupFollowupCameraOn(player) {
