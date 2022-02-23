@@ -19,6 +19,8 @@ class Play extends Phaser.Scene {
 
     const player = this.createPlayer(playerZones.start);
     const enemies = this.createEnemies(layers.enemySpawns, layers.platformsColliders);
+    // this.player = player;
+    // this.enemies = enemies;
 
     
     this.createEnemyColliders(enemies, {
@@ -29,7 +31,7 @@ class Play extends Phaser.Scene {
 
     this.createPlayerColliders(player, {
       colliders: {
-        platformsColliders: layers.platformsColliders
+        platformsColliders: layers.platformsColliders, enemies
       }
     });
 
@@ -92,12 +94,25 @@ class Play extends Phaser.Scene {
     return { location, platforms, platformsColliders, playerZones, enemySpawns };
 
   }
+  
+  range() {
+    const x1 = this.player.x;
+    const y1  = this.player.y;
+    for (let enemy in this.enemies) {
+      const x2 = enemy.x;
+      const y2 = enemy.y
+     const inRange = Between(x1, y1, x2, y2);
+     if (inRange < 10) {
+     enemy.takesHit(this.player);
+    } 
 
+  }
+  }
 
   createPlayer(start) {
 
 
-    return new Player(this, start.x, start.y);
+    return new Player(this, start.x, start.y, this.range);
   }
 
   createEnemies(creationLayer, platformsColliders) {
@@ -119,6 +134,11 @@ class Play extends Phaser.Scene {
     player.takesHit(enemy);
   }
 
+  enemyCollision(player, enemy ) {
+
+    enemy.takesHit(player);
+  }
+
 
   createEnemyColliders(enemies, { colliders }) {
     enemies
@@ -129,7 +149,10 @@ class Play extends Phaser.Scene {
   createPlayerColliders(player, { colliders }) {
     player
       .addCollider(colliders.platformsColliders)
+      .addCollider(colliders.enemies, this.enemyCollision);
   }
+
+
 
   
   setupFollowupCameraOn(player) {

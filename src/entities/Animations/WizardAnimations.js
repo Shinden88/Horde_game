@@ -28,12 +28,12 @@ export default (anims) => {
       repeat: -1,
     });
   
-    // anims.create({
-    //   key: "wizard-die",
-    //   frames: anims.generateFrameNumbers("wizard", { start: 17, end: 26 }),
-    //   frameRate: 2,
-    //   repeat: -1,
-    // });
+    anims.create({
+      key: "wizard-die",
+      frames: anims.generateFrameNumbers("wizard", { start: 17, end: 26 }),
+      frameRate: 2,
+      repeat: -1,
+    });
   
 
   };

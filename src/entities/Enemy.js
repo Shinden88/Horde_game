@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import collidable from '../mixins/collidable';
 
 class Enemy extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key) {
+  constructor(scene, x, y, key, Range) {
     super(scene, x, y, key);
 
 
@@ -26,6 +26,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.maxPatrolDistance = 200;
     this.currentPatrolDistance = 0;
     this.health = 40;
+    this.hasBeenHit = false;
 
     this.platformCollidersLayer = null;
     this.rayGraphics = this.scene.add.graphics({lineStyle: {width: 2, color: 0xaa00aa}});
@@ -84,32 +85,31 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   //sword hit stuff
-  // playDamageEnemy() {
-  //   return  this.scene.enemy.add({
-  //     targets: this, 
-  //     duration: 100,
-  //     repeat: -1,
-  //     tint: 0xffffff
-  //   })
-  // }
+  playDamageEnemy() {
+    return  this.scene.enemy.add({
+      targets: this, 
+      duration: 100,
+      repeat: -1,
+      tint: 0xffffff
+    })
+  }
 
-  // takesHit(source) {
-  //   if (this.hasBeenHit) {
-  //     return;
-  //   }
-  //   this.hasBeenHit = true;
-  //   this.bounceOff();
-  //   const hitAnim = this.playDamageEnemy();
+  takesHit(source) {
+    if (this.hasBeenHit) {
+      return;
+    }
+    this.hasBeenHit = true;
+    const hitAnim = this.playDamageEnemy();
 
-  //   this.health -= source.damage;
-  //   this.hp.decrease(this.health);
+    this.health -= source.damage;
+    this.hp.decrease(this.health);
 
-  //   this.scene.time.delayedCall(1000, () => {
-  //     this.hasBeenHit = false;
-  //     hitAnim.stop();
-  //     this.clearTint();
-  //   });
-  // }
+    this.scene.time.delayedCall(1000, () => {
+      this.hasBeenHit = false;
+      hitAnim.stop();
+      this.clearTint();
+    });
+  }
 
    //sword hit stuff
 
