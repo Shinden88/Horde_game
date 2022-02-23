@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
+// import Hud from "../hud/HealthBar";
+import EventEmitter from "../events/Emitter";
 
 class Play extends Phaser.Scene {
   constructor(config) {
@@ -39,6 +41,7 @@ class Play extends Phaser.Scene {
       }
     });
 
+    this.createGameEvents();
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
     initAnims(this.anims);
@@ -98,6 +101,14 @@ class Play extends Phaser.Scene {
     return { location, platforms, platformsColliders, playerZones, enemySpawns };
 
   }
+
+  createGameEvents() {
+    EventEmitter.on('PLAYER_LOSE', () => {
+      alert('Player lost!')
+    })
+  }
+
+
  functiondistanceSq(object,target) {
 
     var xDif = object.x - target.x;
