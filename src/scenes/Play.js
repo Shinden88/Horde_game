@@ -43,7 +43,6 @@ class Play extends Phaser.Scene {
       colliders: {
         platformsColliders: layers.platformsColliders,
         enemies, 
-        // projectiles: enemies.getProjectiles(),
         collectables
       }
     });
@@ -170,9 +169,11 @@ class Play extends Phaser.Scene {
     entity.takesHit(source);
   }
 
-onCollect(entity, collectable) {
-  console.log();('collecting!');
-}
+  onCollect(entity, collectable) {
+    // disableGameObject -> this will deactivate the object, default: false
+    // hideGameObject -> this will hide the game object. Default: false
+    collectable.disableBody(true, true);
+  }
 
 
 
