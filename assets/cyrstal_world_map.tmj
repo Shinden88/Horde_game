@@ -154,7 +154,7 @@
         {
          "draworder":"topdown",
          "id":18,
-         "name":"collectibles",
+         "name":"collectables",
          "objects":[
                 {
                  "gid":8196,

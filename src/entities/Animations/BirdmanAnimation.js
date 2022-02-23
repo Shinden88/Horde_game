@@ -1,5 +1,4 @@
-export default (anims) => {
- `  `
+export default anims => {
   anims.create({
     key: 'birdman-idle',
     frames: anims.generateFrameNumbers('birdman', {start: 0, end: 12}),
@@ -7,15 +6,13 @@ export default (anims) => {
     repeat: -1
   })
 
-  //enemy dies
   anims.create({
     key: 'birdman-hurt',
     frames: anims.generateFrameNumbers('birdman', {start: 25, end: 26}),
-    frameRate: 5,
+    frameRate: 10,
     repeat: 0
   })
-};
-
+}
 
 // export default anims => {
  
