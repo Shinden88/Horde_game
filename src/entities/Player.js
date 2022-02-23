@@ -27,6 +27,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.hasBeenHit = false;
     this.bounceVelocity = 250;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
+
+    this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectiles = new Projectiles(this.scene);
 
     //healthbar
@@ -66,9 +68,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     const onFloor = this.body.onFloor();
 
     if (left.isDown) {
+      this.lastDirection = Phaser.Physics.Arcade.FACING_LEFT;
       this.setVelocityX(-this.playerSpeed);
       this.setFlipX(true);
     } else if (right.isDown) {
+      this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
       this.setVelocityX(this.playerSpeed);
       this.setFlipX(false);
     } else {

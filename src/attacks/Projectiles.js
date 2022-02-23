@@ -19,8 +19,23 @@ class Projectiles extends Phaser.Physics.Arcade.Group {
     const projectile = this.getFirstDead(false);
 
     if (!projectile) { return; }
+    
+    
+    //const center = initiator.getCenter();
+    
+
+    if (initiator.lastDirection === Phaser.Physics.Arcade.FACING_RIGHT) {
+      projectile.speed = Math.abs(projectile.speed);
+      projectile.setFlipX(false);
+
+    } else {
+      projectile.speed = -Math.abs(projectile.speed);
+      projectile.setFlipX(true);
+    }
 
     projectile.fire(initiator.x, initiator.y);
+    
+    //projectile.fire(center.x, center.y);
   }
 
 }
