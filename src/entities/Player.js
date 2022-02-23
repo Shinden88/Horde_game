@@ -52,8 +52,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) {
       return;
     }
-    const { left, right, space, up } = this.cursors;
+    const { left, right, space, a } = this.cursors;
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
+    // const isAJustDown = Phaser.Input.Keyboard.JustDown(a);
+
     const onFloor = this.body.onFloor();
 
     if (left.isDown) {
@@ -77,12 +79,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.jumpCount = 0;
     }
 
+    // if (isAJustDown && 
+    //   (onFloor || !hasHit || ...range )) {
+    //     this.play("attack", true);
+    //     this.play("birdman-hurt", true);
+    //     this.play("wizard-die", true);
+
+
+    //     damage = 40
+    //   } else  {
+
+    //   }
+//if they are on the floor and within range the attack
+//attack player anim & enemy anim plus damage they dissappear
+//else just play attack anim
+
 
     onFloor
       ? this.body.velocity.x !== 0
         ? this.play("run", true)
         : this.play("idle", true)
-      : this.play("jump", true);
+      : this.play("jump", true)
+      
   }
 
   playDamageTween() {
@@ -91,8 +109,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       duration: 100,
       repeat: -1,
       tint: 0xffffff,
-    });
+    }); 
   }
+
+  
 
   bounceOff() {
     this.body.touching.right
@@ -102,7 +122,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     setTimeout(() => this.setVelocityY(-this.bounceVelocity), 0);
   }
 
-  takesHit(initiator) {
+  takesHit(source) {
     if (this.hasBeenHit) {
       return;
     }
@@ -110,7 +130,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.bounceOff();
     const hitAnim = this.playDamageTween();
 
-    this.health -= initiator.damage;
+    this.health -= source.damage;
     this.hp.decrease(this.health);
 
     this.scene.time.delayedCall(1000, () => {
@@ -119,6 +139,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.clearTint();
     });
 
+
+
+
+    
     // this.scene.time.addEvent({
     //   delay: 1000,
     //   callback:  () => {

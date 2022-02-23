@@ -25,6 +25,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.timeFromLastTurn = 0;
     this.maxPatrolDistance = 200;
     this.currentPatrolDistance = 0;
+    this.health = 40;
 
     this.platformCollidersLayer = null;
     this.rayGraphics = this.scene.add.graphics({lineStyle: {width: 2, color: 0xaa00aa}});
@@ -81,6 +82,38 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   setPlatformColliders(platformCollidersLayer) {
     this.platformCollidersLayer = platformCollidersLayer;
   }
+
+  //sword hit stuff
+  // playDamageEnemy() {
+  //   return  this.scene.enemy.add({
+  //     targets: this, 
+  //     duration: 100,
+  //     repeat: -1,
+  //     tint: 0xffffff
+  //   })
+  // }
+
+  // takesHit(source) {
+  //   if (this.hasBeenHit) {
+  //     return;
+  //   }
+  //   this.hasBeenHit = true;
+  //   this.bounceOff();
+  //   const hitAnim = this.playDamageEnemy();
+
+  //   this.health -= source.damage;
+  //   this.hp.decrease(this.health);
+
+  //   this.scene.time.delayedCall(1000, () => {
+  //     this.hasBeenHit = false;
+  //     hitAnim.stop();
+  //     this.clearTint();
+  //   });
+  // }
+
+   //sword hit stuff
+
+
 }
 
 
