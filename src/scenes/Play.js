@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
   }
 
   create() {
+    //background Music
     this.playBgMusic();
 
 
@@ -19,16 +20,15 @@ class Play extends Phaser.Scene {
 
     const player = this.createPlayer(playerZones.start);
     const enemies = this.createEnemies(layers.enemySpawns, layers.platformsColliders);
-    this.player = player;
-    this.enemies = enemies;
 
-    
+    //the stuff the enemy collides with
     this.createEnemyColliders(enemies, {
       colliders: {
       platformsColliders: layers.platformsColliders, player
       }
     });
 
+    //stuff player colides with
     this.createPlayerColliders(player, {
       colliders: {
         platformsColliders: layers.platformsColliders, enemies

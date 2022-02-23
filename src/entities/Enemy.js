@@ -32,9 +32,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.rayGraphics = this.scene.add.graphics({lineStyle: {width: 2, color: 0xaa00aa}});
 
     this.body.setGravityY(this.gravity);
+    //sets game object size
     this.setSize(20, 45);
     this.setOffset(7, 20);
     this.setCollideWorldBounds(true);
+    //won't move upon collison
     this.setImmovable(true);
     this.setOrigin(0.5, 1);
     this.setVelocityX(this.speed);
@@ -52,13 +54,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     if (!this.body || !this.body.onFloor()) { return; }
 
-  
-
     this.currentPatrolDistance += Math.abs(this.body.deltaX());
 
+    //detect the platform 
     const { ray, hasHit } = this.raycast(this.body, this.platformCollidersLayer, {
       precision: 1, steepnes: 0.4});
 
+      //allows the enemy to walk back and forth
     if ((hasHit || this.currentPatrolDistance >= this.maxPatrolDistance) &&
     this.timeFromLastTurn + 100 < time) {
       this.setFlipX(!this.flipX);
@@ -84,34 +86,34 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.platformCollidersLayer = platformCollidersLayer;
   }
 
-  //sword hit stuff
-  playDamageEnemy() {
-    return  this.scene.enemy.add({
-      targets: this, 
-      duration: 100,
-      repeat: -1,
-      tint: 0xffffff
-    })
-  }
+  // //sword hit stuff
+  // playDamageEnemy() {
+  //   return  this.scene.enemy.add({
+  //     targets: this, 
+  //     duration: 100,
+  //     repeat: -1,
+  //     tint: 0xffffff
+  //   })
+  // }
 
-  takesHit(source) {
-    if (this.hasBeenHit) {
-      return;
-    }
-    this.hasBeenHit = true;
-    const hitAnim = this.playDamageEnemy();
+  // takesHit(source) {
+  //   if (this.hasBeenHit) {
+  //     return;
+  //   }
+  //   this.hasBeenHit = true;
+  //   const hitAnim = this.playDamageEnemy();
 
-    this.health -= source.damage;
-    this.hp.decrease(this.health);
+  //   this.health -= source.damage;
+  //   this.hp.decrease(this.health);
 
-    this.scene.time.delayedCall(1000, () => {
-      this.hasBeenHit = false;
-      hitAnim.stop();
-      this.clearTint();
-    });
-  }
+  //   this.scene.time.delayedCall(1000, () => {
+  //     this.hasBeenHit = false;
+  //     hitAnim.stop();
+  //     this.clearTint();
+  //   });
+  // }
 
-   //sword hit stuff
+  //  //sword hit stuff
 
 
 }
