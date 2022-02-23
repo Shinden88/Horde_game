@@ -3,6 +3,7 @@ import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
 import Collectable from "../collectables/Collectable";
+import Hud from "../hud";
 // import Hud from "../hud/HealthBar";
 // import EventEmitter from "../events/Emitter";
 
@@ -13,6 +14,8 @@ class Play extends Phaser.Scene {
   }
 
   create() {
+
+    this.score = 0;
     //background Music
     this.playBgMusic();
 
@@ -29,6 +32,9 @@ class Play extends Phaser.Scene {
 
     //adding the collectable items to the page
     const collectables = this.createCollectables(layers.collectables)
+
+
+    new Hud(this, 0, 0);
 
     //the stuff the enemy collides with
     this.createEnemyColliders(enemies, {
@@ -96,7 +102,9 @@ class Play extends Phaser.Scene {
   }
 
 
-
+createHud(){
+  new Hud(this, 0, 0);
+}
   createCollectables(collectableLayer) {
     const collectables = this.physics.add.staticGroup().setDepth(-1);
 
@@ -170,8 +178,8 @@ class Play extends Phaser.Scene {
   }
 
   onCollect(entity, collectable) {
-    // disableGameObject -> this will deactivate the object, default: false
-    // hideGameObject -> this will hide the game object. Default: false
+    this.score += collectable.score;
+    console.log(this.score);
     collectable.disableBody(true, true);
   }
 
@@ -188,7 +196,7 @@ class Play extends Phaser.Scene {
     player
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.projectiles, this.onWeaponHit)
-      .addOverlap(colliders.collectables, this.onCollect)
+      .addOverlap(colliders.collectables, this.onCollect,)
      // this.enemyCollision
   }
 
