@@ -8,7 +8,7 @@ class Preload extends Phaser.Scene {
 
   preload() {
     this.load.tilemapTiledJSON('level_1', 'assets/cyrstal_world_map.tmj');
-    // this.load.tilemapTiledJSON('level_2', 'assets/cyrstal_world_map.tmj');
+   
 
     this.load.image('tilesOne', 'assets/main_lev_build_1.png');
     this.load.image('tilesTwo', 'assets/main_lev_build_2.png');
@@ -17,6 +17,7 @@ class Preload extends Phaser.Scene {
     this.load.image('bg-cave1', '/assets/Backgrounds/blue_L3.png');
     this.load.image('sky-play', 'assets/Backgrounds/blue_L1.png');
     this.load.image('menu-bg', 'assets/hordemain.png.png');
+    // this.load.image('credits-bg', 'assets/credits.png')
     this.load.image('back', 'assets/back.png');
 
 

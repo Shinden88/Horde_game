@@ -4,6 +4,7 @@ import PlayScene from "./scenes/Play";
 import PreloadScene from "./scenes/Preload";
 import MenuScene from "./scenes/Menu";
 import LevelScene from './scenes/Levels';
+// import CreditsScene from './scenes/Credits';
 
 const MAP_WIDTH = 1600;
 
@@ -31,7 +32,8 @@ const SHARED_CONFIG = {
   rightBottomCorner: {
     x: ((WIDTH / ZOOM_FACTOR) + ((WIDTH - (WIDTH / ZOOM_FACTOR)) / 2)),
     y: ((HEIGHT / ZOOM_FACTOR) + ((HEIGHT - (HEIGHT / ZOOM_FACTOR)) / 2)),
-  }
+  },
+  lastlevel: 1
 
 };
 
