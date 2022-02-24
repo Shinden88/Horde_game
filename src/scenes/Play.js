@@ -18,6 +18,7 @@ class Play extends Phaser.Scene {
     this.score = 0;
     //background Music
     this.playBgMusic();
+    // this.collectSound = this.sound.add('coin-pickup', {volume: 0.2});
 
     const map = this.createMap();
 
@@ -64,7 +65,7 @@ class Play extends Phaser.Scene {
       return;
     }
 
-    this.sound.add("theme", { loop: true, volume: 0.03 }).play();
+    this.sound.add("theme", { loop: true, volume: 0.01 }).play();
   }
 
  
@@ -179,6 +180,7 @@ createHud(){
 
   onCollect(entity, collectable) {
     this.score += collectable.score;
+    // this.collectSound.play();
     console.log(this.score);
     collectable.disableBody(true, true);
   }

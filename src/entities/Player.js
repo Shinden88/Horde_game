@@ -29,6 +29,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.hasBeenHit = false;
     this.bounceVelocity = 250;
     this.cursors = this.scene.input.keyboard.createCursorKeys();
+    this.jumpSound = this.scene.sound.add('jump', {volume: 0.2});
+    // this.projectileSound = this.scene.sound.add('projectile-launch', {volume: 0.2});
+    this.jumpSound = this.scene.sound.add('step', {volume: 0.2});
+    // this.swipeSound = this.scene.sound.add('swipe', {volume: 0.2});
 
     this.lastDirection = Phaser.Physics.Arcade.FACING_RIGHT;
     this.projectiles = new Projectiles(this.scene);
@@ -53,8 +57,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // add button for firing the projectiles
     this.scene.input.keyboard.on('keydown-Q', () => {
       this.play('idle', true);
+      // this.projectileSound.play();
       this.projectiles.fireProjectile(this);
     })
+//sound effect when running
+    // this.scene.time.addEvent({
+    //   delay: 350,
+    //   repeat: -1,
+    //   callbackScope: this,
+    //   callback: () => {
+    //     if (this.isPlayingAnims('run')) {
+    //       this.stepSound.play();
+    //     }
+    //   }
+    // })
+  
   }
 
   initEvents() {
@@ -83,8 +100,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (
       isSpaceJustDown &&
-      (onFloor || this.jumpCount < this.consecutiveJumps)
-    ) {
+      (onFloor || this.jumpCount < this.consecutiveJumps)) {
+      this.jumpSound.play();
       this.setVelocityY(-this.playerSpeed * 2);
       this.jumpCount++;
     }
@@ -154,6 +171,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     //   loop: false
     // })
   }
+
+  
 }
 
 export default Player;
