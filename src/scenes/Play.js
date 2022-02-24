@@ -2,9 +2,9 @@ import Phaser from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
-import Collectable from "../collectables/Collectable";
+import Collectables from "../groups/Collectables";
 import Hud from "../hud";
-// import Hud from "../hud/HealthBar";
+
 // import EventEmitter from "../events/Emitter";
 
 class Play extends Phaser.Scene {
@@ -16,6 +16,7 @@ class Play extends Phaser.Scene {
   create() {
 
     this.score = 0;
+    this.hud = new Hud(this, 0, 0);
     //background Music
     this.playBgMusic();
 
@@ -34,7 +35,7 @@ class Play extends Phaser.Scene {
     const collectables = this.createCollectables(layers.collectables)
 
 
-    new Hud(this, 0, 0);
+   
 
     //the stuff the enemy collides with
     this.createEnemyColliders(enemies, {
@@ -64,7 +65,7 @@ class Play extends Phaser.Scene {
       return;
     }
 
-    this.sound.add("theme", { loop: true, volume: 0.03 }).play();
+    this.sound.add("theme", { loop: true, volume: 0.01 }).play();
   }
 
  
@@ -102,15 +103,10 @@ class Play extends Phaser.Scene {
   }
 
 
-createHud(){
-  new Hud(this, 0, 0);
-}
   createCollectables(collectableLayer) {
-    const collectables = this.physics.add.staticGroup().setDepth(-1);
+    const collectables = new Collectables(this).setDepth(-1);
 
-    collectableLayer.objects.forEach(collectableO => {
-      collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
-    })
+    collectables.addFromLayer(collectableLayer);
 
     return collectables;
   }
@@ -179,7 +175,7 @@ createHud(){
 
   onCollect(entity, collectable) {
     this.score += collectable.score;
-    console.log(this.score);
+    this.hud.updateScoreboard(this.score);
     collectable.disableBody(true, true);
   }
 
