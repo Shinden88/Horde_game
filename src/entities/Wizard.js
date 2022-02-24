@@ -17,10 +17,18 @@ class Wizard extends Enemy {
 
   update(time, delta) {
     super.update(time,delta);
+    if (!this.active) { return; }
+    if (this.isPlayingAnims('wizard-die')) { return; }
+
+
     this.play('wizard-idle', true);
     
-
   }
-}
+
+  takesHit(source)
+  {
+    super.takesHit(source);
+    this.play('wizard-die', true)
+  }}
 
 export default Wizard;
