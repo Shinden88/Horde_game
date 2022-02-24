@@ -25,6 +25,7 @@ class Play extends Phaser.Scene {
 
     //background Music
     this.playBgMusic();
+    // this.collectSound = this.sound.add('coin-pickup', {volume: 0.2});
 
     
 
@@ -71,7 +72,7 @@ class Play extends Phaser.Scene {
       return;
     }
 
-    this.sound.add("theme", { loop: true, volume: 0.03 }).play();
+    this.sound.add("theme", { loop: true, volume: 0.01 }).play();
   }
 
  
@@ -214,6 +215,7 @@ createCollectables(collectableLayer) {
     this.score += collectable.score;
     // console.log(this.score);
     this.hud.updateScoreboard(this.score);
+=
     //disableGameObject ==this will deactivate the object, default: false 
     // hideGameObject =>this will hide the game object Default false 
     collectable.disableBody(true, true);
