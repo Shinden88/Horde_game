@@ -4,8 +4,7 @@ import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
 import Collectables from "../groups/Collectables";
 import Hud from "../hud";
-// import Hud from "../hud/HealthBar";
-// import EventEmitter from "../events/Emitter";
+import EventEmitter from "../events/Emitter";
 
 class Play extends Phaser.Scene {
   constructor(config) {
@@ -13,7 +12,7 @@ class Play extends Phaser.Scene {
     this.config = config;
   }
 
-  create() {
+  create({gameStatus}) {
     this.score = 0;
     this.hud = new Hud(this, 0,0);
 
@@ -41,7 +40,8 @@ class Play extends Phaser.Scene {
     //adding the collectable items to the page
     const collectables = this.createCollectables(layers.collectables);
 
-
+    
+    this.createBG(map);
 
     //the stuff the enemy collides with
     this.createEnemyColliders(enemies, {
@@ -61,9 +61,12 @@ class Play extends Phaser.Scene {
       }
     });
 
-    // this.createGameEvents();
+    
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
+
+    if (gameStatus === 'PLAYER_LOSE') {return; }
+    this.createGameEvents();
     
   }
 
@@ -79,15 +82,19 @@ class Play extends Phaser.Scene {
 
   //renders the map of the level
   createMap() {
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({key: `level_${this.getCurrentLevel()}`});
 
     map.addTilesetImage("main_lev_build_1", "tilesOne");
+    map.addTilesetImage('blue_L1', 'blue_L1');
     return map;
   }
 
   //renders the map layers
   createLayers(map) {
     const setTiles = map.getTileset("main_lev_build_1");
+    const tilesetBg = map.getTileset('blue_L1');
+
+    map.createLayer('distance', tilesetBg).setDepth(-12);
     const platformsColliders = map.createLayer("platform_collider", setTiles);
     const location = map.createLayer("environment", setTiles).setDepth(-2);
     const platforms = map.createLayer("platforms", setTiles);
@@ -127,54 +134,31 @@ createCollectables(collectableLayer) {
 
   return collectables;
 }
-// createCollectables(collectableLayer) {
-//   const collectables = this.physics.add.staticGroup().setDepth(-1);
 
-//   collectableLayer.objects.forEach(collectableO => {
-//     collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
-//   })
+createBG(map) {
+  const bgObject = map.getObjectLayer('distance_bg').objects[0];
+  // this.add.tileSprite(bgObject.x, bgObject.y, this.config.width, bgObject.height, 'bg-cave1')
+  this.spikesImage = this.add.tileSprite(bgObject.x, bgObject.y, this.config.width, bgObject.height, 'bg-cave1')
+    .setOrigin(0, 1)
+    .setDepth(-10)
+    .setScrollFactor(0, 1)
 
-//   return collectables;
-// }
-
-  // createCollectables(collectableLayer) {
-  //   const collectables = this.physics.add.staticGroup().setDepth(-1);
+    // this.add.tileSprite(0, 0, this.config.width, 250, 'sky-play')
+    this.skyImage = this.add.tileSprite(0, 0, this.config.width, 180, 'sky-play')
+      .setOrigin(0, 0)
+      .setDepth(-11)
+      .setScale(1.1)
+      .setScrollFactor(0, 1)
+}
+ 
+  createGameEvents() {
+    EventEmitter.on("PLAYER_LOSE", () => {
+      console.log('you lost');
+      this.scene.restart({gameStatus: 'PLAYER_LOSE'});
+    });
+  }
 
   
-
-  //   // collectableLayer.objects.forEach(collectableO => {
-  //   //   collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
-  //   // })
-
-  //   return collectables;
-  // }
-  // createGameEvents() {
-  //   EventEmitter.on("PLAYER_LOSE", () => {
-  //     alert("Player lost!");
-  //   });
-  // }
-
-  // functiondistanceSq(object, target) {
-  //   var xDif = object.x - target.x;
-  //   var yDif = object.y - target.y;
-
-  //   return xDif * xDif + yDif * yDif;
-  // }
-  // range() {
-
-  //   this.player.x = x1;
-  //    this.player.y = y1
-  //   for (let enemy in this.enemies) {
-  //     const x2 = enemy.x;
-  //     const y2 = enemy.y
-  //    const inRange = Between(x1, y1, x2, y2);
-  //    if (inRange < 10) {
-  //    enemy.takesHit(this.player);
-  //   }
-
-  // }
-  // }
-
   createPlayer(start) {
     return new Player(this, start.x, start.y, this.range);
   }
@@ -257,6 +241,10 @@ createCollectables(collectableLayer) {
     };
   }
 
+  getCurrentLevel() {
+    return this.registry.get('level') || 1;
+ }
+
   createEndOfLevel(end, player) {
     const endOfLevel = this.physics.add
       .sprite(end.x, end.y, "end")
@@ -266,8 +254,14 @@ createCollectables(collectableLayer) {
 
     const endOverlap = this.physics.add.overlap(player, endOfLevel, () => {
       endOverlap.active = false;
-      console.log("You win!");
+      this.registry.inc('level', 1);
+      this.scene.restart({gameStatus: 'LEVEL_COMPLETED'})
+      
     });
+  }
+  update() {
+    this.spikesImage.tilePositionX = this.cameras.main.scrollX * 0.3;
+    this.skyImage.tilePositionX = this.cameras.main.scrollX * 0.1;
   }
 }
 export default Play;
