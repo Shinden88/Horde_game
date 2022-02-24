@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
   create() {
     this.score = 0;
     const map = this.createMap();
+
+    initAnims(this.anims);
     
 
     //background Music
@@ -51,14 +53,15 @@ class Play extends Phaser.Scene {
       colliders: {
         platformsColliders: layers.platformsColliders,
         enemies, 
-        collectables
+        collectables,
+         traps: layers.traps
       }
     });
 
     // this.createGameEvents();
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
-    initAnims(this.anims);
+    
   }
 
   playBgMusic() {
@@ -89,9 +92,11 @@ class Play extends Phaser.Scene {
     const enemySpawns = map.getObjectLayer("enemy_spawns");
 
     const collectables = map.getObjectLayer("collectables");
+    const traps = map.createLayer('traps', setTiles)
 
     //Phaser executes that any tiles larger than 0 will collide
     platformsColliders.setCollisionByProperty({ collides: true });
+    traps.setCollisionByExclusion(-1)
 
     return {
       location,
@@ -100,6 +105,7 @@ class Play extends Phaser.Scene {
       playerZones,
       enemySpawns,
       collectables,
+      traps
     };
   }
 
@@ -110,12 +116,23 @@ class Play extends Phaser.Scene {
 
 createCollectables(collectableLayer) {
   const collectables = new Collectables(this).setDepth(-1);
+  // const potionImage = this.add.image('potionPurple');
 
   collectables.addFromLayer(collectableLayer);
-  // collectables.playAnimation('diamond-shine');
+  
+  // collectables.playAnimation('potionPurple');
 
   return collectables;
 }
+// createCollectables(collectableLayer) {
+//   const collectables = this.physics.add.staticGroup().setDepth(-1);
+
+//   collectableLayer.objects.forEach(collectableO => {
+//     collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
+//   })
+
+//   return collectables;
+// }
 
   // createCollectables(collectableLayer) {
   //   const collectables = this.physics.add.staticGroup().setDepth(-1);
@@ -213,6 +230,7 @@ createCollectables(collectableLayer) {
     player
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.projectiles, this.onWeaponHit)
+      .addCollider(colliders.traps, () => { console.log('we got hit!') })
       .addOverlap(colliders.collectables, this.onCollect, this)
      // this.enemyCollision
   }
