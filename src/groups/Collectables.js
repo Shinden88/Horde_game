@@ -1,3 +1,4 @@
+
 import Phaser from 'phaser';
 import Collectable from '../collectables/Collectable';
 
@@ -11,25 +12,57 @@ class Collectables extends Phaser.Physics.Arcade.StaticGroup {
     })
   }
 
-  mapProperties(propertiesList) {
-    if (!propertiesList || propertiesList.length === 0) { return {}; }
 
-    return propertiesList.reduce((map, obj) => {
-      map[obj.name] = obj.value;
-      return map;
-    }, {})
-  }
+  
+//   mapProperties(propertiesList) {
+//     if (!propertiesList || propertiesList.length === 0) { return {}; }
 
-  addFromLayer(layer) {
-    const {score: defaultScore, type} = this.mapProperties(layer.properties);
+//     return propertiesList.reduce((map, obj) => {
+//         map[obj.name] = obj.value;
+//         return map;
+//     }, {})
+//   }
 
-    layer.objects.forEach(collectableO => {
-      const collectable = this.get(collectableO.x, collectableO.y, type)
-      const props = this.mapProperties(collectableO.properties);
+//   //   return propertiesList.reduce((map, obj) => {
+//   //     map[obj.name] = obj.value;
+//   //     return map;
+//   //   }, {})
+//   // }
+//   addFromLayer(layer) {
 
-      collectable.score = props.score || defaultScore;
-    })
-  }
+//     const {score: defaultScore, type} = this.mapProperties(layer.properties);
+      
+//     layer.objects.forEach(collectableO => {
+//       const collectable = this.get(collectableO.x, collectableO.y, type)
+//       const props = this.mapProperties(collectableO.properties);
+
+//       collectable.score = props.score || defaultScore;
+//     })
+//   }
+  
+// }
+mapProperties(propertiesList) {
+  if (!propertiesList || propertiesList.length === 0) { return {}; }
+
+  return propertiesList.reduce((map, obj) => {
+    map[obj.name] = obj.value;
+    return map;
+  }, {})
 }
+
+addFromLayer(layer) {
+  const {score: defaultScore, type} = this.mapProperties(layer.properties);
+
+  layer.objects.forEach(collectableO => {
+    const collectable = this.get(collectableO.x, collectableO.y, type)
+    const props = this.mapProperties(collectableO.properties);
+
+    collectable.score = props.score || defaultScore;
+  })
+}
+}
+
+
+
 
 export default Collectables;

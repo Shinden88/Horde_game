@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
-import Collectable from "../collectables/Collectable";
+import Collectables from "../groups/Collectables";
 import Hud from "../hud";
 // import Hud from "../hud/HealthBar";
 // import EventEmitter from "../events/Emitter";
@@ -14,13 +14,17 @@ class Play extends Phaser.Scene {
   }
 
   create() {
-
     this.score = 0;
+    const map = this.createMap();
+
+    initAnims(this.anims);
+    
+
     //background Music
     this.playBgMusic();
     // this.collectSound = this.sound.add('coin-pickup', {volume: 0.2});
 
-    const map = this.createMap();
+    
 
     const layers = this.createLayers(map);
     const playerZones = this.getPlayerZones(layers.playerZones);
@@ -32,7 +36,7 @@ class Play extends Phaser.Scene {
     );
 
     //adding the collectable items to the page
-    const collectables = this.createCollectables(layers.collectables)
+    const collectables = this.createCollectables(layers.collectables);
 
 
     new Hud(this, 0, 0);
@@ -50,14 +54,15 @@ class Play extends Phaser.Scene {
       colliders: {
         platformsColliders: layers.platformsColliders,
         enemies, 
-        collectables
+        collectables,
+         traps: layers.traps
       }
     });
 
     // this.createGameEvents();
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
-    initAnims(this.anims);
+    
   }
 
   playBgMusic() {
@@ -88,9 +93,11 @@ class Play extends Phaser.Scene {
     const enemySpawns = map.getObjectLayer("enemy_spawns");
 
     const collectables = map.getObjectLayer("collectables");
+    const traps = map.createLayer('traps', setTiles)
 
     //Phaser executes that any tiles larger than 0 will collide
     platformsColliders.setCollisionByProperty({ collides: true });
+    traps.setCollisionByExclusion(-1)
 
     return {
       location,
@@ -99,34 +106,58 @@ class Play extends Phaser.Scene {
       playerZones,
       enemySpawns,
       collectables,
+      traps
     };
   }
 
 
-createHud(){
-  new Hud(this, 0, 0);
+// createHud(){
+//   new Hud(this, 0, 0);
+// }
+
+createCollectables(collectableLayer) {
+  const collectables = new Collectables(this).setDepth(-1);
+  // const potionImage = this.add.image('potionPurple');
+
+  collectables.addFromLayer(collectableLayer);
+  
+  // collectables.playAnimation('potionPurple');
+
+  return collectables;
 }
-  createCollectables(collectableLayer) {
-    const collectables = this.physics.add.staticGroup().setDepth(-1);
+// createCollectables(collectableLayer) {
+//   const collectables = this.physics.add.staticGroup().setDepth(-1);
 
-    collectableLayer.objects.forEach(collectableO => {
-      collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
-    })
+//   collectableLayer.objects.forEach(collectableO => {
+//     collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
+//   })
 
-    return collectables;
-  }
+//   return collectables;
+// }
+
+  // createCollectables(collectableLayer) {
+  //   const collectables = this.physics.add.staticGroup().setDepth(-1);
+
+  
+
+  //   // collectableLayer.objects.forEach(collectableO => {
+  //   //   collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
+  //   // })
+
+  //   return collectables;
+  // }
   // createGameEvents() {
   //   EventEmitter.on("PLAYER_LOSE", () => {
   //     alert("Player lost!");
   //   });
   // }
 
-  functiondistanceSq(object, target) {
-    var xDif = object.x - target.x;
-    var yDif = object.y - target.y;
+  // functiondistanceSq(object, target) {
+  //   var xDif = object.x - target.x;
+  //   var yDif = object.y - target.y;
 
-    return xDif * xDif + yDif * yDif;
-  }
+  //   return xDif * xDif + yDif * yDif;
+  // }
   // range() {
 
   //   this.player.x = x1;
@@ -182,7 +213,10 @@ createHud(){
     this.score += collectable.score;
     // this.collectSound.play();
     console.log(this.score);
+    //disableGameObject ==this will deactivate the object, default: false 
+    // hideGameObject =>this will hide the game object Default false 
     collectable.disableBody(true, true);
+    
   }
 
 
@@ -198,7 +232,8 @@ createHud(){
     player
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.projectiles, this.onWeaponHit)
-      .addOverlap(colliders.collectables, this.onCollect,)
+      .addCollider(colliders.traps, () => { console.log('we got hit!') })
+      .addOverlap(colliders.collectables, this.onCollect, this)
      // this.enemyCollision
   }
 
