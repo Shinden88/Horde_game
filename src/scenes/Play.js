@@ -206,7 +206,7 @@ createCollectables(collectableLayer) {
     enemy.takesHit(player);
   }
 
-  onWeaponHit(entity, source) {
+  onHit(entity, source) {
     entity.takesHit(source);
   }
 
@@ -226,14 +226,14 @@ createCollectables(collectableLayer) {
     enemies
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.player, this.onPlayerCollision)
-      .addCollider(colliders.player.projectiles, this.onWeaponHit);
+      .addCollider(colliders.player.projectiles, this.onHit);
   }
 
   createPlayerColliders(player, { colliders }) {
     player
       .addCollider(colliders.platformsColliders)
-      .addCollider(colliders.projectiles, this.onWeaponHit)
-      .addCollider(colliders.traps, () => { console.log('we got hit!') })
+      .addCollider(colliders.projectiles, this.onHit)
+      .addCollider(colliders.traps, this.onHit)
       .addOverlap(colliders.collectables, this.onCollect, this)
      // this.enemyCollision
   }
