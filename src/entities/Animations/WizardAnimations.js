@@ -10,15 +10,7 @@ export default (anims) => {
       frames: anims.generateFrameNumbers("wizard", { start: 36, end: 42 }),
       frameRate: 7,
       repeat: -1,
-    });
-  
-    // anims.create({
-    //   key: "wizard-attack1",
-    //   frames: anims.generateFrameNumbers("wizard", { start: 1, end: 8 }),
-    //   frameRate: 7,
-    //   repeat: -1,
-    // });
-  
+    });  
   
   
     anims.create({

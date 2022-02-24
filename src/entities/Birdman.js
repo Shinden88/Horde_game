@@ -1,6 +1,6 @@
 import Enemy from './Enemy';
 import initializeAnimations from './Animations/BirdmanAnimation.js';
-// import anims from '../mixins/anims';
+
 
 class Birdman extends Enemy {
   constructor(scene, x, y) {
@@ -9,12 +9,6 @@ class Birdman extends Enemy {
     initializeAnimations(scene.anims);
     // Object.assign(this, anims);
   }
-
-  // init() {
-  //   super.init();
-  //   this.setSize(20, 45);
-  //   this.setOffset(7, 20);
-  // }
 
   update(time, delta) {
     super.update(time, delta);

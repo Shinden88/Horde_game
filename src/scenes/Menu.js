@@ -27,7 +27,7 @@ class MenuScene extends BaseScene {
     })
 
     textGO.on('pointerout', () => {
-      textGO.setStyle({fill: '#713E01'});
+      textGO.setStyle({fill: 'white'});
     })
 
     textGO.on('pointerup', () => {
