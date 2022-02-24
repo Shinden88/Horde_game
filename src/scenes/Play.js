@@ -15,6 +15,9 @@ class Play extends Phaser.Scene {
 
   create() {
     this.score = 0;
+    this.hud = new Hud(this, 0,0);
+
+
     const map = this.createMap();
 
     initAnims(this.anims);
@@ -38,7 +41,6 @@ class Play extends Phaser.Scene {
     const collectables = this.createCollectables(layers.collectables);
 
 
-    new Hud(this, 0, 0);
 
     //the stuff the enemy collides with
     this.createEnemyColliders(enemies, {
@@ -210,7 +212,8 @@ createCollectables(collectableLayer) {
 
   onCollect(entity, collectable) {
     this.score += collectable.score;
-    console.log(this.score);
+    // console.log(this.score);
+    this.hud.updateScoreboard(this.score);
     //disableGameObject ==this will deactivate the object, default: false 
     // hideGameObject =>this will hide the game object Default false 
     collectable.disableBody(true, true);
