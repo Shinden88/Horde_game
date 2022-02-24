@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Player from "../entities/Player";
 import Enemies from "../groups/Enemies";
 import initAnims from "../anims";
-import Collectable from "../collectables/Collectable";
+import Collectables from "../groups/Collectables";
 import Hud from "../hud";
 // import Hud from "../hud/HealthBar";
 // import EventEmitter from "../events/Emitter";
@@ -14,12 +14,14 @@ class Play extends Phaser.Scene {
   }
 
   create() {
-
     this.score = 0;
+    const map = this.createMap();
+    
+
     //background Music
     this.playBgMusic();
 
-    const map = this.createMap();
+    
 
     const layers = this.createLayers(map);
     const playerZones = this.getPlayerZones(layers.playerZones);
@@ -31,7 +33,7 @@ class Play extends Phaser.Scene {
     );
 
     //adding the collectable items to the page
-    const collectables = this.createCollectables(layers.collectables)
+    const collectables = this.createCollectables(layers.collectables);
 
 
     new Hud(this, 0, 0);
@@ -102,30 +104,42 @@ class Play extends Phaser.Scene {
   }
 
 
-createHud(){
-  new Hud(this, 0, 0);
+// createHud(){
+//   new Hud(this, 0, 0);
+// }
+
+createCollectables(collectableLayer) {
+  const collectables = new Collectables(this).setDepth(-1);
+
+  collectables.addFromLayer(collectableLayer);
+  // collectables.playAnimation('diamond-shine');
+
+  return collectables;
 }
-  createCollectables(collectableLayer) {
-    const collectables = this.physics.add.staticGroup().setDepth(-1);
 
-    collectableLayer.objects.forEach(collectableO => {
-      collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
-    })
+  // createCollectables(collectableLayer) {
+  //   const collectables = this.physics.add.staticGroup().setDepth(-1);
 
-    return collectables;
-  }
+  
+
+  //   // collectableLayer.objects.forEach(collectableO => {
+  //   //   collectables.add(new Collectable(this, collectableO.x, collectableO.y, 'potionPurple'));
+  //   // })
+
+  //   return collectables;
+  // }
   // createGameEvents() {
   //   EventEmitter.on("PLAYER_LOSE", () => {
   //     alert("Player lost!");
   //   });
   // }
 
-  functiondistanceSq(object, target) {
-    var xDif = object.x - target.x;
-    var yDif = object.y - target.y;
+  // functiondistanceSq(object, target) {
+  //   var xDif = object.x - target.x;
+  //   var yDif = object.y - target.y;
 
-    return xDif * xDif + yDif * yDif;
-  }
+  //   return xDif * xDif + yDif * yDif;
+  // }
   // range() {
 
   //   this.player.x = x1;
@@ -180,7 +194,10 @@ createHud(){
   onCollect(entity, collectable) {
     this.score += collectable.score;
     console.log(this.score);
+    //disableGameObject ==this will deactivate the object, default: false 
+    // hideGameObject =>this will hide the game object Default false 
     collectable.disableBody(true, true);
+    
   }
 
 
@@ -196,7 +213,7 @@ createHud(){
     player
       .addCollider(colliders.platformsColliders)
       .addCollider(colliders.projectiles, this.onWeaponHit)
-      .addOverlap(colliders.collectables, this.onCollect,)
+      .addOverlap(colliders.collectables, this.onCollect, this)
      // this.enemyCollision
   }
 
