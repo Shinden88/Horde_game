@@ -61,7 +61,7 @@ class Play extends Phaser.Scene {
       }
     });
 
-    
+    this.createBackButton();
     this.createEndOfLevel(playerZones.end, player);
     this.setupFollowupCameraOn(player);
 
@@ -150,6 +150,19 @@ createBG(map) {
       .setScale(1.1)
       .setScrollFactor(0, 1)
 }
+
+createBackButton() {
+  const btn = this.add.image(this.config.rightBottomCorner.x, this.config.rightBottomCorner.y, 'back')
+    .setOrigin(1)
+    .setScrollFactor(0)
+    .setScale(2)
+    .setInteractive()
+
+  btn.on('pointerup', () => {
+    this.scene.start('MenuScene');
+  })
+
+}
  
   createGameEvents() {
     EventEmitter.on("PLAYER_LOSE", () => {
@@ -199,7 +212,7 @@ createBG(map) {
     this.score += collectable.score;
     // console.log(this.score);
     this.hud.updateScoreboard(this.score);
-=
+
     //disableGameObject ==this will deactivate the object, default: false 
     // hideGameObject =>this will hide the game object Default false 
     collectable.disableBody(true, true);
