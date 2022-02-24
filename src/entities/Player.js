@@ -4,7 +4,7 @@ import collidable from "../mixins/collidable";
 import HealthBar from "../hud/HealthBar";
 import Projectiles from "../attacks/Projectiles";
 import anims from '../mixins/anims';
-// import EventEmitter from "../events/Emitter";m,
+import EventEmitter from "../events/Emitter";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -34,6 +34,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.projectiles = new Projectiles(this.scene);
 
     //healthbar
+    // this.health = 100;
     this.health = 100;
     this.hp = new HealthBar(
       this.scene,
@@ -62,9 +63,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    if (this.hasBeenHit || !this.body) {
+    if (this.hasBeenHit || !this.body) { return; }
+
+    if (this.getBounds().top > this.scene.config.height) {
+      EventEmitter.emit('PLAYER_LOSE');
       return;
     }
+
     const { left, right, space, up } = this.cursors;
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space);
     const onFloor = this.body.onFloor();
@@ -131,23 +136,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   takesHit(initiator) {
-    if (this.hasBeenHit) {
+    if (this.hasBeenHit) { return; }
+     
+    this.health -= initiator.damage || initiator.properties.damage || 0;
+    if (this.health <= 0) {
+      EventEmitter.emit('PLAYER_LOSE');
       return;
     }
-
-    // this.health -= source.damage || source.properties.damage || 0;
-    // if (this.health <= 0) {
-    //   EventEmitter.emit('PLAYER_LOSE');
-    //   return;
-    // }
 
 
     this.hasBeenHit = true;
     this.bounceOff(initiator);
     const hitAnim = this.playDamageTween();
 
-    this.health -= initiator.damage || initiator.properties.damage;
-    // this.health -= initiator.damage || initiator.properties.damage || 0;
+    
     this.hp.decrease(this.health);
 
     this.scene.time.delayedCall(1000, () => {
