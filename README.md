@@ -1,5 +1,5 @@
 # Horde_game
-Clone the game
-npm install
-run npm dev
+Clone the game,
+npm install,
+run npm dev,
 Enjoy!
